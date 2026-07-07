@@ -1,0 +1,2199 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Meltem & Hakan'ın Nişanı</title>
+
+  <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --wine: #7b294e;
+      --rose: #c94f88;
+      --soft: #fff3f8;
+      --gold: #c4934c;
+      --text: #4b2c3a;
+      --muted: #7a5b69;
+      --glass: rgba(255,255,255,.78);
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: "Segoe UI", Arial, sans-serif;
+      color: var(--text);
+      overflow-x: hidden;
+      background:
+        radial-gradient(circle at top left, rgba(255,255,255,.95), transparent 34%),
+        radial-gradient(circle at top right, rgba(255,225,241,.9), transparent 28%),
+        linear-gradient(135deg, #fff1f6, #f8e7ff 45%, #fff8e8);
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(circle at 15% 20%, rgba(255,255,255,.9) 0 2px, transparent 3px),
+        radial-gradient(circle at 80% 10%, rgba(255,255,255,.8) 0 2px, transparent 3px),
+        radial-gradient(circle at 70% 75%, rgba(255,255,255,.8) 0 2px, transparent 3px),
+        radial-gradient(circle at 30% 85%, rgba(255,255,255,.75) 0 2px, transparent 3px);
+      pointer-events: none;
+      animation: sparkleBg 4s ease-in-out infinite alternate;
+    }
+
+    @keyframes sparkleBg {
+      from { opacity: .55; }
+      to { opacity: 1; }
+    }
+
+    .falling {
+      position: fixed;
+      top: -60px;
+      z-index: 1;
+      pointer-events: none;
+      animation-name: fall;
+      animation-timing-function: linear;
+      animation-iteration-count: 1;
+      opacity: .75;
+      filter: drop-shadow(0 8px 12px rgba(120,50,85,.12));
+    }
+
+    @keyframes fall {
+      0% { transform: translateY(-80px) rotate(0deg); opacity: 0; }
+      12% { opacity: .8; }
+      100% { transform: translateY(110vh) rotate(360deg); opacity: 0; }
+    }
+
+    .page {
+      position: relative;
+      z-index: 2;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 680px;
+      background: var(--glass);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(255,255,255,.72);
+      border-radius: 34px;
+      padding: 34px 28px 28px;
+      text-align: center;
+      box-shadow: 0 28px 90px rgba(120, 50, 85, .22);
+      animation: cardIn .9s cubic-bezier(.2,.8,.2,1);
+      overflow: hidden;
+      position: relative;
+    }
+
+    .card::before {
+      content: "";
+      position: absolute;
+      inset: -2px;
+      background: linear-gradient(120deg, transparent, rgba(255,255,255,.8), transparent);
+      transform: translateX(-110%);
+      animation: shine 4.5s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes shine {
+      0%, 55% { transform: translateX(-110%); }
+      85%, 100% { transform: translateX(110%); }
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(35px) scale(.96); }
+      to { opacity: 1; transform: translateY(0) scale(1); }
+    }
+
+    .ring {
+      width: 92px;
+      height: 92px;
+      margin: 0 auto 14px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, rgba(255,255,255,.9), rgba(255,240,247,.9));
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.8), 0 18px 40px rgba(154,64,111,.2);
+      animation: floatRing 3.5s ease-in-out infinite;
+    }
+
+    .ring span {
+      font-size: 48px;
+      animation: pulse 1.8s ease-in-out infinite;
+    }
+
+    @keyframes floatRing {
+      0%,100% { transform: translateY(0); }
+      50% { transform: translateY(-8px); }
+    }
+
+    @keyframes pulse {
+      0%,100% { transform: scale(1); filter: brightness(1); }
+      50% { transform: scale(1.07); filter: brightness(1.12); }
+    }
+
+    .badge {
+      display: inline-block;
+      margin-bottom: 14px;
+      padding: 9px 18px;
+      border-radius: 999px;
+      color: #9b2f67;
+      background: #fff0f6;
+      font-weight: 800;
+      letter-spacing: .2px;
+    }
+
+    h1 {
+      margin: 8px 0 10px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(25px, 5.6vw, 34px);
+      line-height: 1.12;
+      color: var(--wine);
+    }
+
+    .date {
+      display: inline-flex;
+      gap: 10px;
+      align-items: center;
+      justify-content: center;
+      margin: 4px 0 18px;
+      padding: 10px 16px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.75);
+      color: #8a5a23;
+      font-weight: 800;
+      border: 1px solid rgba(196,147,76,.18);
+    }
+
+    .subtitle {
+      margin: 0 auto 22px;
+      max-width: 540px;
+      color: var(--muted);
+      line-height: 1.55;
+      font-size: 14.5px;
+    }
+
+    .compact-mode .main-title {
+      display: none;
+    }
+
+    .compact-mode .main-title .full-title-extra {
+      display: none;
+    }
+
+    .compact-mode .subtitle,
+    .compact-mode .date {
+      display: none;
+    }
+
+    .upload-clean-mode .main-title,
+    .upload-clean-mode .subtitle,
+    .upload-clean-mode .date {
+      display: none;
+    }
+
+    .upload-clean-mode .ring {
+      width: 74px;
+      height: 74px;
+      margin-bottom: 10px;
+    }
+
+    .upload-clean-mode .ring span {
+      font-size: 38px;
+    }
+
+    .upload-clean-mode .badge {
+      margin-bottom: 8px;
+      padding: 7px 15px;
+      font-size: 14px;
+    }
+
+    .step { animation: stepIn .45s ease; }
+
+    @keyframes stepIn {
+      from { opacity: 0; transform: translateY(18px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .input {
+      width: 100%;
+      border: 1px solid #e8bfd1;
+      background: white;
+      color: #5b3042;
+      border-radius: 18px;
+      padding: 17px 18px;
+      font-size: 17px;
+      outline: none;
+      transition: .2s;
+      box-shadow: 0 12px 28px rgba(120,50,85,.07);
+    }
+
+    .input:focus {
+      border-color: var(--rose);
+      box-shadow: 0 0 0 4px rgba(201,79,136,.12), 0 12px 28px rgba(120,50,85,.07);
+    }
+
+    .btn {
+      width: 100%;
+      margin-top: 16px;
+      border: none;
+      border-radius: 19px;
+      padding: 16px 20px;
+      cursor: pointer;
+      color: white;
+      font-size: 17px;
+      font-weight: 900;
+      letter-spacing: .2px;
+      background: linear-gradient(135deg, #d45a94, #8f3b76);
+      box-shadow: 0 15px 32px rgba(143,59,118,.28);
+      transition: .25s;
+    }
+
+    .btn:hover:not(:disabled) {
+      transform: translateY(-2px);
+      box-shadow: 0 20px 38px rgba(143,59,118,.36);
+    }
+
+    .btn:disabled {
+      opacity: .55;
+      cursor: not-allowed;
+    }
+
+    .btn.secondary {
+      background: white;
+      color: #9b2f67;
+      border: 1px solid #f1c7da;
+      box-shadow: 0 12px 26px rgba(120,50,85,.1);
+    }
+
+    .btn.small {
+      width: auto;
+      padding: 11px 16px;
+      border-radius: 999px;
+      font-size: 14px;
+      margin-top: 0;
+    }
+
+    .warning {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 16px;
+      color: #a10035;
+      background: #fff0f3;
+      line-height: 1.5;
+      font-weight: 650;
+      text-align: left;
+    }
+
+    .choice-title {
+      margin: 2px 0 16px;
+      color: var(--wine);
+      font-size: 24px;
+    }
+
+    .choice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 16px;
+    }
+
+    .choice-card {
+      min-height: 118px;
+      border: 1px solid #f1c7da;
+      border-radius: 20px;
+      padding: 15px;
+      background: rgba(255,255,255,.85);
+      cursor: pointer;
+      box-shadow: 0 16px 36px rgba(120,50,85,.1);
+      transition: .25s;
+      color: var(--text);
+    }
+
+    .choice-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 22px 44px rgba(120,50,85,.16);
+      background: #fff6fb;
+    }
+
+    .choice-icon {
+      font-size: 32px;
+      margin-bottom: 6px;
+    }
+
+    .choice-card strong {
+      display: block;
+      color: #9b2f67;
+      font-size: 16px;
+      margin-bottom: 5px;
+    }
+
+    .choice-card span {
+      color: var(--muted);
+      font-size: 12.5px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .top-upload-panel {
+      display: none;
+      margin: 16px 0 18px;
+      padding: 16px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.92);
+      box-shadow: 0 18px 35px rgba(120,50,85,.12);
+      text-align: left;
+      border: 1px solid rgba(241,199,218,.8);
+      animation: stepIn .35s ease;
+    }
+
+    .top-upload-panel.active { display: block; }
+
+    .folder-preview {
+      display: none;
+      margin: 0 0 13px;
+      padding: 13px 14px;
+      background: white;
+      border-radius: 16px;
+      text-align: left;
+      font-weight: 850;
+      color: #5b3042;
+      box-shadow: 0 10px 22px rgba(120,50,85,.08);
+      word-break: break-word;
+    }
+
+    .mini-info {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+      font-weight: 900;
+      color: #6e314e;
+    }
+
+    .bar {
+      width: 100%;
+      height: 14px;
+      background: #f2dbe7;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .bar > div {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, #d45a94, #8f3b76);
+      border-radius: 999px;
+      transition: width .2s ease;
+    }
+
+    .status {
+      margin-top: 10px;
+      color: #7a5b69;
+      font-size: 14px;
+      font-weight: 700;
+    }
+
+    .success {
+      display: none;
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 20px;
+      background: #effff4;
+      color: #267344;
+      text-align: center;
+      line-height: 1.55;
+      font-weight: 900;
+    }
+
+    .success .big {
+      font-size: 38px;
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .audio-question, .audio-recorder {
+      display: none;
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 20px;
+      background: #fff7fb;
+      border: 1px solid #f1c7da;
+      text-align: center;
+      color: #6e314e;
+      font-weight: 800;
+    }
+
+    .audio-actions {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+
+    .record-timer {
+      margin: 12px auto;
+      width: 104px;
+      height: 104px;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      background: white;
+      border: 5px solid #f2dbe7;
+      box-shadow: 0 14px 28px rgba(120,50,85,.12);
+      font-size: 30px;
+      color: #9b2f67;
+      font-weight: 950;
+    }
+
+    .rec-status {
+      font-size: 13px;
+      color: #7a5b69;
+      line-height: 1.45;
+      margin-top: 8px;
+    }
+
+    .audio-preview {
+      width: 100%;
+      margin-top: 12px;
+      display: none;
+    }
+
+    .gift-question {
+      display: none;
+      margin-top: 14px;
+      padding: 16px;
+      border-radius: 20px;
+      background: #fff7fb;
+      border: 1px solid #f1c7da;
+      text-align: center;
+      color: #6e314e;
+      font-weight: 850;
+      animation: stepIn .35s ease;
+    }
+
+    .activity-ticker {
+      margin-top: 18px;
+      padding: 13px 15px;
+      border-radius: 18px;
+      background: rgba(255,255,255,.82);
+      border: 1px solid #f1c7da;
+      color: #7b294e;
+      font-weight: 900;
+      box-shadow: 0 12px 28px rgba(120,50,85,.10);
+      overflow: hidden;
+      min-height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .activity-ticker span {
+      display: inline-block;
+      animation: tickerTextIn .45s ease;
+      text-align: center;
+      line-height: 1.35;
+    }
+
+    @keyframes tickerTextIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .gift-amount-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .gift-amount-btn {
+      border: 1px solid #f1c7da;
+      border-radius: 16px;
+      padding: 13px 8px;
+      background: white;
+      color: #9b2f67;
+      font-size: 16px;
+      font-weight: 950;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(120,50,85,.08);
+      transition: .2s;
+    }
+
+    .gift-amount-btn:hover {
+      transform: translateY(-2px);
+      background: #fff2f8;
+    }
+
+    .iban-amount-box {
+      display: none;
+      margin-top: 14px;
+      padding: 14px;
+      border-radius: 18px;
+      background: white;
+      border: 1px dashed #d98aad;
+    }
+
+    .gift-note {
+      margin: 12px 0 0;
+      color: #7a5b69;
+      font-size: 13px;
+      line-height: 1.45;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    .link-list {
+      margin-top: 12px;
+      max-height: 120px;
+      overflow: auto;
+      background: rgba(255,255,255,.75);
+      border-radius: 14px;
+      padding: 10px;
+      text-align: left;
+      font-size: 13px;
+    }
+
+    .link-list a {
+      color: #8f3b76;
+      text-decoration: none;
+      font-weight: 750;
+    }
+
+    .upload-card {
+      margin-top: 14px;
+      background: rgba(255, 247, 251, .9);
+      border: 1px solid #f1c7da;
+      border-radius: 22px;
+      padding: 16px;
+      text-align: center;
+    }
+
+    .hello {
+      margin: 0 0 8px;
+      color: var(--wine);
+      font-size: 24px;
+    }
+
+    .choose-label {
+      display: flex;
+      min-height: 92px;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 10px;
+      border-radius: 18px;
+      border: 2px dashed #d98aad;
+      background: white;
+      color: #9b2f67;
+      cursor: pointer;
+      transition: .25s;
+      padding: 14px;
+    }
+
+    .choose-label:hover {
+      transform: translateY(-2px);
+      background: #fff2f8;
+    }
+
+    .choose-label .icon { font-size: 30px; }
+    .choose-label strong { font-size: 16px; }
+
+    .choose-label small {
+      color: #8a6574;
+      font-weight: 650;
+    }
+
+    input[type="file"] { display: none; }
+
+    .preview-grid, .gallery-grid {
+      margin-top: 18px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .preview-item, .gallery-item {
+      height: 122px;
+      border-radius: 18px;
+      overflow: hidden;
+      position: relative;
+      background: #f6e4ee;
+      box-shadow: 0 10px 22px rgba(120,50,85,.14);
+    }
+
+    .gallery-item {
+      height: 150px;
+    }
+
+    .preview-item img, .gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: .25s;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.06);
+    }
+
+    .preview-item .name, .gallery-item .name {
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 6px;
+      color: white;
+      font-size: 11px;
+      background: rgba(0,0,0,.46);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .gift-box {
+      margin-top: 16px;
+      padding: 18px;
+      border-radius: 24px;
+      background: rgba(255,255,255,.88);
+      border: 1px solid #f1c7da;
+      text-align: left;
+      box-shadow: 0 16px 34px rgba(120,50,85,.1);
+    }
+
+    .iban-card {
+      display: none;
+      margin-top: 14px;
+      background: #fff7fb;
+      border: 1px solid #f1c7da;
+      border-radius: 20px;
+      padding: 14px;
+    }
+
+    .copy-row {
+      margin-top: 10px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: center;
+      background: white;
+      border-radius: 16px;
+      padding: 11px;
+      box-shadow: 0 10px 20px rgba(120,50,85,.08);
+    }
+
+    .copy-row small {
+      display: block;
+      color: #8a6574;
+      font-weight: 750;
+      margin-bottom: 3px;
+    }
+
+    .copy-row strong {
+      color: #5b3042;
+      word-break: break-word;
+      font-size: 14px;
+    }
+
+    .copy-btn {
+      border: none;
+      border-radius: 999px;
+      padding: 9px 12px;
+      cursor: pointer;
+      background: #fff0f6;
+      color: #9b2f67;
+      font-weight: 900;
+    }
+
+
+    .gallery-choice-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .gallery-folder-card {
+      min-height: 122px;
+      border: 1px solid #f1c7da;
+      border-radius: 22px;
+      padding: 18px;
+      background: rgba(255,255,255,.88);
+      cursor: pointer;
+      box-shadow: 0 14px 30px rgba(120,50,85,.1);
+      transition: .25s;
+      text-align: center;
+    }
+
+    .gallery-folder-card:hover {
+      transform: translateY(-3px);
+      background: #fff6fb;
+    }
+
+    .gallery-folder-card .folder-icon {
+      font-size: 38px;
+      margin-bottom: 6px;
+    }
+
+    .gallery-folder-card strong {
+      display: block;
+      color: #9b2f67;
+      font-size: 17px;
+      margin-bottom: 5px;
+    }
+
+    .gallery-folder-card span {
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 650;
+    }
+
+    .audio-list {
+      display: grid;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .audio-card {
+      background: white;
+      border-radius: 16px;
+      padding: 12px;
+      box-shadow: 0 10px 22px rgba(120,50,85,.1);
+    }
+
+    .audio-card audio {
+      width: 100%;
+      margin-top: 8px;
+    }
+
+    .audio-card .name {
+      color: #6e314e;
+      font-weight: 850;
+      font-size: 13px;
+      word-break: break-word;
+    }
+
+    .gallery-head {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .gallery-box {
+      margin-top: 16px;
+      background: rgba(255,255,255,.86);
+      border: 1px solid #f1c7da;
+      border-radius: 26px;
+      padding: 18px;
+      text-align: left;
+    }
+
+    .empty {
+      padding: 18px;
+      border-radius: 18px;
+      background: #fff4f8;
+      color: #7a5b69;
+      font-weight: 750;
+      line-height: 1.55;
+    }
+
+    .footer {
+      margin-top: 24px;
+      color: #9b6d80;
+      font-size: 14px;
+    }
+
+    .confetti {
+      position: fixed;
+      width: 10px;
+      height: 14px;
+      top: -20px;
+      z-index: 999;
+      opacity: .95;
+      animation: confettiFall 2.8s linear forwards;
+    }
+
+    @keyframes confettiFall {
+      to { transform: translateY(110vh) rotate(720deg); opacity: 0; }
+    }
+
+    @media (max-width: 520px) {
+      .page { padding: 14px; align-items: flex-start; }
+      .card { margin-top: 12px; padding: 26px 18px 22px; border-radius: 28px; }
+      .preview-grid, .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+      .preview-item { height: 120px; }
+      .gallery-item { height: 140px; }
+      .ring { width: 78px; height: 78px; }
+      .ring span { font-size: 40px; }
+      .mini-info { font-size: 14px; }
+      .choice-grid { grid-template-columns: 1fr; }
+      .copy-row { grid-template-columns: 1fr; }
+      .copy-btn { width: 100%; }
+      .gallery-head { align-items: stretch; flex-direction: column; }
+      .gallery-choice-grid { grid-template-columns: 1fr; }
+      .btn.small { width: 100%; }
+      .audio-actions { grid-template-columns: 1fr; }
+      .gift-amount-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="page">
+    <section class="card" id="mainCard">
+      <div class="ring"><span>💍</span></div>
+      <div class="badge">Meltem & Hakan'ın Nişan Hatırası</div>
+
+      <h1 class="main-title"><span class="couple-only">Meltem & Hakan</span><span class="full-title-extra">'ın<br>Nişanına Hoşgeldiniz</span></h1>
+
+      <div class="date">📅 15.07.2026</div>
+
+      <p class="subtitle">
+        Bu güzel günümüzden karelerinizi bizimle paylaşın.
+        Önce adınızı yazın, ardından fotoğraf yükleyebilir veya yüklenen hatıraları görebilirsiniz.
+      </p>
+
+      <div id="nameStep" class="step">
+        <input class="input" id="guestName" type="text" placeholder="Ad Soyad yazınız. Örn: Hakan Ayaş" autocomplete="name" />
+        <button class="btn" id="continueBtn">Devam Et</button>
+        <div class="warning" id="warning"></div>
+      </div>
+
+      <div id="choiceStep" class="step" style="display:none;">
+        <h2 class="choice-title" id="choiceTitle"></h2>
+        
+        <div class="choice-grid">
+          <div class="choice-card" id="goUpload">
+            <div class="choice-icon">📤</div>
+            <strong>Fotoğraf Yükle</strong>
+            <span>Kendi çektiğiniz fotoğrafları Meltem & Hakan ile paylaşın.</span>
+          </div>
+
+          <div class="choice-card" id="goGallery">
+            <div class="choice-icon">🖼️</div>
+            <strong>Kayıtlı Fotoğrafları Gör</strong>
+            <span>Misafirlerin yüklediği hatıraları görüntüleyin.</span>
+          </div>
+
+          <div class="choice-card" id="goGift">
+            <div class="choice-icon">💝</div>
+            <strong>Takı Tak</strong>
+            <span>IBAN ile gönderim yapın veya kartla ödeme sayfasına geçin.</span>
+          </div>
+        </div>
+      </div>
+
+      <div id="uploadStep" class="step" style="display:none;">
+        <button class="btn secondary small" id="backFromUpload">← Ana Menü</button>
+        <h2 class="hello" id="helloText"></h2>
+
+        <div class="top-upload-panel active" id="topPanel">
+          <div class="folder-preview" id="folderPreview" style="display:none;"></div>
+
+          <div id="progressArea" style="display:none;">
+            <div class="mini-info">
+              <span id="progressTitle">Yükleniyor...</span>
+              <span id="progressPercent">0%</span>
+            </div>
+            <div class="bar"><div id="progressBar"></div></div>
+            <div class="status" id="statusText">Hazırlanıyor...</div>
+          </div>
+
+          <div class="audio-question" id="audioQuestion">
+            🎙️ Sesli not da bırakmak ister misiniz?
+            <div class="rec-status">Fotoğraf yükleme tamamlandıktan sonra burada sesli not bırakabilirsiniz.</div>
+            <div class="audio-actions">
+              <button class="btn" id="audioYes" type="button">Evet, bırakmak istiyorum</button>
+              <button class="btn secondary" id="audioNo" type="button">Hayır, teşekkürler</button>
+            </div>
+          </div>
+
+          <div class="audio-recorder" id="audioRecorder">
+            <div>🎙️ Sesli Not</div>
+            <div class="rec-status">Maksimum kayıt süresi: <b>2 dakika</b></div>
+            <div class="record-timer" id="recordTimer">120</div>
+
+            <button class="btn" id="startRecordBtn" type="button">Kaydı Başlat</button>
+
+            <div class="audio-actions" id="recordControls" style="display:none;">
+              <button class="btn secondary" id="pauseRecordBtn" type="button">Duraklat</button>
+              <button class="btn secondary" id="stopRecordBtn" type="button">Durdur</button>
+            </div>
+
+            <audio class="audio-preview" id="audioPreview" controls></audio>
+            <button class="btn" id="uploadAudioBtn" type="button" style="display:none;">Yükle</button>
+
+            <div class="rec-status" id="audioStatus">Sesli not başlamadı.</div>
+          </div>
+
+          <div class="gift-question" id="giftQuestion">
+            💝 Takı takmak ister misiniz?
+            <div class="rec-status">İsterseniz IBAN ile gönderebilir veya kartla ödeme sayfasına geçebilirsiniz.</div>
+            <div class="audio-actions">
+              <button class="btn" id="giftYesAfterUpload" type="button">Evet, takı takmak istiyorum</button>
+              <button class="btn secondary" id="giftNoAfterUpload" type="button">Hayır, teşekkürler</button>
+            </div>
+          </div>
+
+          <div class="success" id="successBox"></div>
+        </div>
+
+        <div class="upload-card">
+          <label class="choose-label" for="photos">
+            <span class="icon">📷</span>
+            <strong>Fotoğraf Seç</strong>
+            <small>Birden fazla fotoğraf seçebilirsiniz</small>
+          </label>
+
+          <input id="photos" type="file" accept="image/*" multiple />
+          <div id="previewGrid" class="preview-grid"></div>
+        </div>
+
+        <button class="btn" id="uploadBtn">Fotoğrafları Yükle</button>
+      </div>
+
+      <div id="galleryStep" class="step" style="display:none;">
+        <div class="gallery-head">
+          <button class="btn secondary small" id="backFromGallery">← Ana Menü</button>
+          <button class="btn small" id="refreshGallery">Yenile</button>
+        </div>
+
+        <h2 class="hello">Kayıtlı Hatıralar 🖼️</h2>
+
+        <div id="galleryFolderChoice" class="gallery-choice-grid">
+          <div class="gallery-folder-card" id="openPhotoFolder">
+            <div class="folder-icon">📁</div>
+            <strong>Fotoğraflar</strong>
+            <span>Misafirlerin yüklediği fotoğrafları görün.</span>
+          </div>
+
+          <div class="gallery-folder-card" id="openAudioFolder">
+            <div class="folder-icon">🎙️</div>
+            <strong>Sesli Not</strong>
+            <span>Misafirlerin bıraktığı sesli notları dinleyin.</span>
+          </div>
+        </div>
+
+        <div class="gallery-box" id="photoGalleryBox" style="display:none;">
+          <div class="gallery-head">
+            <button class="btn secondary small" id="backToGalleryFoldersFromPhotos">← Klasörlere Dön</button>
+          </div>
+          <div id="galleryStatus" class="empty">Fotoğraflar yükleniyor...</div>
+          <div id="galleryGrid" class="gallery-grid"></div>
+        </div>
+
+        <div class="gallery-box" id="audioGalleryBox" style="display:none;">
+          <div class="gallery-head">
+            <button class="btn secondary small" id="backToGalleryFoldersFromAudio">← Klasörlere Dön</button>
+          </div>
+          <div id="audioGalleryStatus" class="empty">Sesli notlar yükleniyor...</div>
+          <div id="audioList" class="audio-list"></div>
+        </div>
+      </div>
+
+      <div id="giftStep" class="step" style="display:none;">
+        <button class="btn secondary small" id="backFromGift">← Ana Menü</button>
+        <h2 class="hello">Takı Tak 💝</h2>
+
+        <div class="gift-box">
+          <div id="giftMainButtons">
+            <button class="btn" id="showIbanBtn" type="button">IBAN'a Gönder</button>
+            <button class="btn secondary" id="payCardBtn" type="button">Kredi Kartıyla Öde</button>
+          </div>
+
+          <div id="cardPaymentBox" class="iban-card">
+            <button class="btn secondary small" id="backToGiftChoicesFromCard" type="button">← Ödeme Seçenekleri</button>
+            <p class="gift-note">Takı miktarını seçin. Seçince hareketlerde adınız ve miktarınız görünecek, ardından ödeme sayfası açılacak.</p>
+            <div class="gift-amount-grid" id="giftAmountGrid"></div>
+          </div>
+
+          <div class="iban-card" id="ibanCard">
+            <button class="btn secondary small" id="backToGiftChoicesFromIban" type="button">← Ödeme Seçenekleri</button>
+
+            <div class="copy-row">
+              <div>
+                <small>Alıcı Adı</small>
+                <strong id="accountName">Hatem Meltem Coşkun</strong>
+              </div>
+              <button class="copy-btn" type="button" data-copy="Hatem Meltem Coşkun">Kopyala</button>
+            </div>
+
+            <div class="copy-row">
+              <div>
+                <small>IBAN</small>
+                <strong id="ibanText">TR830021300000362158000001</strong>
+              </div>
+              <button class="copy-btn" type="button" data-copy="TR830021300000362158000001">Kopyala</button>
+            </div>
+
+            <div class="iban-amount-box" id="ibanAmountBox">
+              <small style="display:block;color:#8a6574;font-weight:800;margin-bottom:8px;">Gönderdiğiniz / göndereceğiniz takı miktarı</small>
+              <input class="input" id="ibanAmountInput" type="number" min="1" step="1" placeholder="Örn: 1000" />
+              <button class="btn" id="saveIbanGiftBtn" type="button">Takıyı Gönderdim</button>
+              <p class="gift-note">IBAN ile gönderdikten sonra miktarı yazıp kaydedin; herkes canlı hareketlerde görecek.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="activity-ticker" id="globalTicker">
+        <span id="activityTickerText">🌸 Hatıra hareketleri yükleniyor...</span>
+      </div>
+
+      <div class="footer">Sevgiyle, Meltem & Hakan ❤️</div>
+    </section>
+  </main>
+
+  <script>
+    const CLOUD_NAME = "kkj1zmsg";
+    const UPLOAD_PRESET = "meltem_hakan_upload";
+    const BASE_FOLDER = "meltem-hakan-nisan";
+    const GALLERY_TAG = "meltem_hakan_nisan_gallery";
+    const AUDIO_TAG = "meltem_hakan_nisan_audio";
+    const AUDIO_BASE_FOLDER = "meltem-hakan-nisan-sesli-notlar";
+    const GIFT_TAG = "meltem_hakan_nisan_gift";
+    const GIFT_BASE_FOLDER = "meltem-hakan-nisan-takilar";
+
+    const GIFT_LINKS = [
+      { amount: 200, url: "https://www.shopier.com/komputerdelisi/48732244" },
+      { amount: 300, url: "https://www.shopier.com/komputerdelisi/48734307" },
+      { amount: 400, url: "https://www.shopier.com/komputerdelisi/48734270" },
+      { amount: 500, url: "https://www.shopier.com/komputerdelisi/48734327" },
+      { amount: 750, url: "https://www.shopier.com/komputerdelisi/48734478" },
+      { amount: 1000, url: "https://www.shopier.com/komputerdelisi/48734516" },
+      { amount: 1250, url: "https://www.shopier.com/komputerdelisi/48734527" },
+      { amount: 1500, url: "https://www.shopier.com/komputerdelisi/48734539" },
+      { amount: 1750, url: "https://www.shopier.com/komputerdelisi/48734563" },
+      { amount: 2000, url: "https://www.shopier.com/komputerdelisi/48734576" },
+      { amount: 2500, url: "https://www.shopier.com/komputerdelisi/48734604" },
+      { amount: 3000, url: "https://www.shopier.com/komputerdelisi/48734245" }
+    ];
+
+    const mainCard = document.getElementById("mainCard");
+    const nameStep = document.getElementById("nameStep");
+    const choiceStep = document.getElementById("choiceStep");
+    const uploadStep = document.getElementById("uploadStep");
+    const galleryStep = document.getElementById("galleryStep");
+    const giftStep = document.getElementById("giftStep");
+
+    const guestNameInput = document.getElementById("guestName");
+    const warning = document.getElementById("warning");
+    const continueBtn = document.getElementById("continueBtn");
+    const choiceTitle = document.getElementById("choiceTitle");
+    const goUpload = document.getElementById("goUpload");
+    const goGallery = document.getElementById("goGallery");
+    const goGift = document.getElementById("goGift");
+
+    const helloText = document.getElementById("helloText");
+    const folderPreview = document.getElementById("folderPreview");
+    const photosInput = document.getElementById("photos");
+    const previewGrid = document.getElementById("previewGrid");
+    const uploadBtn = document.getElementById("uploadBtn");
+    const progressArea = document.getElementById("progressArea");
+    const progressTitle = document.getElementById("progressTitle");
+    const progressBar = document.getElementById("progressBar");
+    const progressPercent = document.getElementById("progressPercent");
+    const statusText = document.getElementById("statusText");
+    const successBox = document.getElementById("successBox");
+
+    const audioQuestion = document.getElementById("audioQuestion");
+    const audioYes = document.getElementById("audioYes");
+    const audioNo = document.getElementById("audioNo");
+    const audioRecorder = document.getElementById("audioRecorder");
+    const startRecordBtn = document.getElementById("startRecordBtn");
+    const pauseRecordBtn = document.getElementById("pauseRecordBtn");
+    const stopRecordBtn = document.getElementById("stopRecordBtn");
+    const recordControls = document.getElementById("recordControls");
+    const uploadAudioBtn = document.getElementById("uploadAudioBtn");
+    const audioPreview = document.getElementById("audioPreview");
+    const audioStatus = document.getElementById("audioStatus");
+    const recordTimer = document.getElementById("recordTimer");
+    const giftQuestion = document.getElementById("giftQuestion");
+    const giftYesAfterUpload = document.getElementById("giftYesAfterUpload");
+    const giftNoAfterUpload = document.getElementById("giftNoAfterUpload");
+    const activityTickerText = document.getElementById("activityTickerText");
+
+    const backFromUpload = document.getElementById("backFromUpload");
+    const backFromGallery = document.getElementById("backFromGallery");
+    const backFromGift = document.getElementById("backFromGift");
+    const showIbanBtn = document.getElementById("showIbanBtn");
+    const payCardBtn = document.getElementById("payCardBtn");
+    const giftMainButtons = document.getElementById("giftMainButtons");
+    const ibanCard = document.getElementById("ibanCard");
+    const cardPaymentBox = document.getElementById("cardPaymentBox");
+    const giftAmountGrid = document.getElementById("giftAmountGrid");
+    const ibanAmountBox = document.getElementById("ibanAmountBox");
+    const ibanAmountInput = document.getElementById("ibanAmountInput");
+    const saveIbanGiftBtn = document.getElementById("saveIbanGiftBtn");
+    const backToGiftChoicesFromCard = document.getElementById("backToGiftChoicesFromCard");
+    const backToGiftChoicesFromIban = document.getElementById("backToGiftChoicesFromIban");
+    const refreshGallery = document.getElementById("refreshGallery");
+    const galleryGrid = document.getElementById("galleryGrid");
+    const galleryStatus = document.getElementById("galleryStatus");
+    const galleryFolderChoice = document.getElementById("galleryFolderChoice");
+    const openPhotoFolder = document.getElementById("openPhotoFolder");
+    const openAudioFolder = document.getElementById("openAudioFolder");
+    const photoGalleryBox = document.getElementById("photoGalleryBox");
+    const audioGalleryBox = document.getElementById("audioGalleryBox");
+    const backToGalleryFoldersFromPhotos = document.getElementById("backToGalleryFoldersFromPhotos");
+    const backToGalleryFoldersFromAudio = document.getElementById("backToGalleryFoldersFromAudio");
+    const audioGalleryStatus = document.getElementById("audioGalleryStatus");
+    const audioList = document.getElementById("audioList");
+
+    let guestName = "";
+    let folderName = "";
+    let selectedFiles = [];
+    let mediaRecorder = null;
+    let audioChunks = [];
+    let audioBlob = null;
+    let recordInterval = null;
+    let secondsLeft = 120;
+    let isPaused = false;
+    let activeStream = null;
+
+    function normalizeName(value) {
+      return value
+        .trim()
+        .replace(/\s+/g, " ")
+        .replace(/[\\/:*?"<>|#%{}[\]~]/g, "")
+        .slice(0, 45);
+    }
+
+    function formatDateTimeForFolder() {
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, "0");
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const year = String(now.getFullYear()).slice(-2);
+      const hour = String(now.getHours()).padStart(2, "0");
+      const minute = String(now.getMinutes()).padStart(2, "0");
+      const second = String(now.getSeconds()).padStart(2, "0");
+      return `${day}.${month}.${year} ${hour}:${minute}:${second}`;
+    }
+
+    function slugifyTurkish(value) {
+      return String(value || "")
+        .trim()
+        .toLocaleLowerCase("tr-TR")
+        .replace(/ı/g, "i")
+        .replace(/ğ/g, "g")
+        .replace(/ü/g, "u")
+        .replace(/ş/g, "s")
+        .replace(/ö/g, "o")
+        .replace(/ç/g, "c")
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "");
+    }
+
+    function safeCloudinaryText(value) {
+      return String(value || "")
+        .trim()
+        .replace(/[\\/:*?"<>|#%{}[\]~]/g, "")
+        .replace(/\s+/g, " ")
+        .slice(0, 80);
+    }
+
+    function getGuestFolderOnly() {
+      return slugifyTurkish(guestName) || "misafir";
+    }
+
+    function getUploadStamp() {
+      const now = new Date();
+      const day = String(now.getDate()).padStart(2, "0");
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const year = String(now.getFullYear()).slice(-2);
+      const hour = String(now.getHours()).padStart(2, "0");
+      const minute = String(now.getMinutes()).padStart(2, "0");
+      const second = String(now.getSeconds()).padStart(2, "0");
+      return `${day}.${month}.${year}-${hour}.${minute}.${second}`;
+    }
+
+    function getCloudinaryDisplayName(file, index) {
+      const originalBase = safeCloudinaryText(file.name.replace(/\.[^/.]+$/, "")).slice(0, 35) || "fotograf";
+      return `${guestName} - ${getUploadStamp()} - ${String(index + 1).padStart(2, "0")} - ${originalBase}`;
+    }
+
+    function cleanPublicIdPart(value) {
+      return decodeURIComponent(String(value || ""))
+        .replace(/-/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function titleName(value) {
+      const cleaned = cleanPublicIdPart(value);
+      return cleaned
+        ? cleaned.split(" ").map(part => part ? part.charAt(0).toLocaleUpperCase("tr-TR") + part.slice(1) : "").join(" ")
+        : "Misafir";
+    }
+
+    function makeDisplayName(firstName, lastName) {
+      const first = titleName(firstName);
+      const last = titleName(lastName);
+
+      if (!last) return first || "Misafir";
+
+      const lastPrefix = last.slice(0, 2);
+
+      return `${first} ${lastPrefix}.`;
+    }
+
+    function getShortName(fullName) {
+      const parts = String(fullName || "")
+        .trim()
+        .replace(/\s+/g, " ")
+        .split(" ")
+        .filter(Boolean);
+
+      if (!parts.length) return "Misafir";
+
+      const firstName = parts[0];
+      const lastName = parts.length > 1 ? parts[parts.length - 1] : "";
+
+      return makeDisplayName(firstName, lastName);
+    }
+
+    function getShortNameFromSlug(slug) {
+      const text = cleanPublicIdPart(slug);
+      const parts = text.split(" ").filter(Boolean);
+
+      if (!parts.length) return "Misafir";
+
+      const firstName = parts[0];
+      const lastName = parts.length > 1 ? parts[parts.length - 1] : "";
+
+      return makeDisplayName(firstName, lastName);
+    }
+
+    function formatTL(amount) {
+      return Number(amount || 0).toLocaleString("tr-TR") + " ₺";
+    }
+
+    function showOnly(step) {
+      nameStep.style.display = "none";
+      choiceStep.style.display = "none";
+      uploadStep.style.display = "none";
+      galleryStep.style.display = "none";
+      giftStep.style.display = "none";
+
+      mainCard.classList.remove("compact-mode", "upload-clean-mode");
+
+      if (step !== nameStep) {
+        mainCard.classList.add("compact-mode");
+      }
+
+      step.style.display = "block";
+      
+      const globalTicker = document.getElementById("globalTicker");
+      const choiceGrid = document.querySelector(".choice-grid");
+      const footer = document.querySelector(".footer");
+
+      if (globalTicker && choiceGrid && footer) {
+        if (step === choiceStep) {
+          choiceStep.insertBefore(globalTicker, choiceGrid);
+          globalTicker.style.marginTop = "0";
+          globalTicker.style.marginBottom = "18px";
+        } else {
+          mainCard.insertBefore(globalTicker, footer);
+          globalTicker.style.marginTop = "18px";
+          globalTicker.style.marginBottom = "0";
+        }
+      }
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    }
+
+    function showWarning(message) {
+      warning.innerHTML = message;
+      warning.style.display = "block";
+    }
+
+    continueBtn.addEventListener("click", () => {
+      warning.style.display = "none";
+
+      const cleanName = normalizeName(guestNameInput.value);
+
+      if (!cleanName) {
+        showWarning("Lütfen adınızı ve soyadınızı yazınız.");
+        return;
+      }
+
+      const nameParts = cleanName.split(" ").filter(Boolean);
+      if (nameParts.length < 2) {
+        showWarning("Lütfen ad ve soyad birlikte yazınız. Örn: Hakan Ayaş");
+        return;
+      }
+
+      guestName = cleanName;
+      try {
+        localStorage.setItem("meltemHakanGuestName", guestName);
+      } catch (error) {}
+
+      choiceTitle.innerHTML = `Hoş geldiniz, <span style="color:#b83270">${guestName}</span>`;
+      showOnly(choiceStep);
+    });
+
+    guestNameInput.addEventListener("keydown", (e) => {
+      if (e.key === "Enter") continueBtn.click();
+    });
+
+    goUpload.addEventListener("click", () => {
+      folderName = getGuestFolderOnly();
+      helloText.innerHTML = `Fotoğraf yükleme alanı 📤`;
+      showOnly(uploadStep);
+      mainCard.classList.remove("upload-clean-mode");
+    });
+
+    goGallery.addEventListener("click", async () => {
+      showOnly(galleryStep);
+      showGalleryFolders();
+    });
+
+    backFromUpload.addEventListener("click", () => showOnly(choiceStep));
+    backFromGallery.addEventListener("click", () => showOnly(choiceStep));
+    backFromGift.addEventListener("click", () => showOnly(choiceStep));
+
+    goGift.addEventListener("click", () => {
+      ibanCard.style.display = "none";
+      cardPaymentBox.style.display = "none";
+      if (giftMainButtons) giftMainButtons.style.display = "block";
+      showOnly(giftStep);
+      setTimeout(refreshGiftActivitiesOnly, 150);
+    });
+
+    showIbanBtn.addEventListener("click", () => {
+      if (giftMainButtons) giftMainButtons.style.display = "none";
+      ibanCard.style.display = "block";
+      cardPaymentBox.style.display = "none";
+    });
+
+    payCardBtn.addEventListener("click", () => {
+      if (giftMainButtons) giftMainButtons.style.display = "none";
+      cardPaymentBox.style.display = "block";
+      ibanCard.style.display = "none";
+    });
+
+    function showGiftMainChoices() {
+      if (giftMainButtons) giftMainButtons.style.display = "block";
+      if (ibanCard) ibanCard.style.display = "none";
+      if (cardPaymentBox) cardPaymentBox.style.display = "none";
+    }
+
+    if (backToGiftChoicesFromCard) {
+      backToGiftChoicesFromCard.addEventListener("click", showGiftMainChoices);
+    }
+
+    if (backToGiftChoicesFromIban) {
+      backToGiftChoicesFromIban.addEventListener("click", showGiftMainChoices);
+    }
+
+    document.querySelectorAll(".copy-btn").forEach(button => {
+      button.addEventListener("click", async () => {
+        const text = button.getAttribute("data-copy");
+        try {
+          await navigator.clipboard.writeText(text);
+          const old = button.textContent;
+          button.textContent = "Kopyalandı";
+          if (ibanAmountBox) ibanAmountBox.style.display = "block";
+          setTimeout(() => button.textContent = old, 1200);
+        } catch (e) {
+          alert("Kopyalanacak bilgi: " + text);
+          if (ibanAmountBox) ibanAmountBox.style.display = "block";
+        }
+      });
+    });
+
+    function renderGiftAmountButtons() {
+      if (!giftAmountGrid) return;
+      giftAmountGrid.innerHTML = "";
+
+      GIFT_LINKS.forEach(item => {
+        const button = document.createElement("button");
+        button.type = "button";
+        button.className = "gift-amount-btn";
+        button.textContent = `${item.amount.toLocaleString("tr-TR")} ₺`;
+        button.addEventListener("click", async () => {
+          try {
+            await recordGiftActivity(item.amount, "kredi-karti");
+          } catch (error) {
+          }
+          window.location.href = item.url;
+        });
+        giftAmountGrid.appendChild(button);
+      });
+    }
+
+    renderGiftAmountButtons();
+
+    saveIbanGiftBtn.addEventListener("click", async () => {
+      const amount = Number(ibanAmountInput.value);
+
+      if (!amount || amount <= 0) {
+        alert("Lütfen geçerli bir miktar yazınız.");
+        return;
+      }
+
+      saveIbanGiftBtn.disabled = true;
+      saveIbanGiftBtn.textContent = "Kaydediliyor...";
+
+      try {
+        await recordGiftActivity(Math.round(amount), "iban");
+        ibanAmountInput.value = "";
+        saveIbanGiftBtn.textContent = "Kaydedildi ✅";
+        setTimeout(() => {
+          saveIbanGiftBtn.textContent = "Takıyı Gönderdim";
+        }, 1600);
+      } catch (error) {
+        alert("Takı hareketi kaydedilemedi: " + error.message);
+        saveIbanGiftBtn.textContent = "Takıyı Gönderdim";
+      } finally {
+        saveIbanGiftBtn.disabled = false;
+      }
+    });
+
+    refreshGallery.addEventListener("click", async () => {
+      if (photoGalleryBox.style.display === "block") {
+        await loadGallery();
+      } else if (audioGalleryBox.style.display === "block") {
+        await loadAudioGallery();
+      } else {
+        showGalleryFolders();
+      }
+    });
+
+    openPhotoFolder.addEventListener("click", loadGallery);
+    openAudioFolder.addEventListener("click", loadAudioGallery);
+    backToGalleryFoldersFromPhotos.addEventListener("click", showGalleryFolders);
+    backToGalleryFoldersFromAudio.addEventListener("click", showGalleryFolders);
+
+    photosInput.addEventListener("change", () => {
+      selectedFiles = Array.from(photosInput.files || []).filter(file => file.type.startsWith("image/"));
+      previewGrid.innerHTML = "";
+      successBox.style.display = "none";
+      progressArea.style.display = "none";
+      progressBar.style.width = "0%";
+      progressPercent.textContent = "0%";
+      statusText.textContent = "Hazırlanıyor...";
+      mainCard.classList.remove("upload-clean-mode");
+      audioQuestion.style.display = "none";
+      audioRecorder.style.display = "none";
+      giftQuestion.style.display = "none";
+      audioPreview.style.display = "none";
+      uploadAudioBtn.style.display = "none";
+      recordControls.style.display = "none";
+      startRecordBtn.style.display = "block";
+      startRecordBtn.disabled = false;
+      startRecordBtn.textContent = "Kaydı Başlat";
+      pauseRecordBtn.textContent = "Duraklat";
+      isPaused = false;
+      audioStatus.textContent = "Sesli not başlamadı.";
+      recordTimer.textContent = "120";
+      audioBlob = null;
+
+      selectedFiles.forEach(file => {
+        const reader = new FileReader();
+
+        reader.onload = (event) => {
+          const item = document.createElement("div");
+          item.className = "preview-item";
+          item.innerHTML = `
+            <img src="${event.target.result}" alt="">
+            <div class="name">${file.name}</div>
+          `;
+          previewGrid.appendChild(item);
+        };
+
+        reader.readAsDataURL(file);
+      });
+    });
+
+    function uploadOneFile(file, index, total) {
+      return new Promise((resolve, reject) => {
+        const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`;
+
+        const formData = new FormData();
+        formData.append("file", file);
+        formData.append("upload_preset", UPLOAD_PRESET);
+
+        const guestFolderOnly = getGuestFolderOnly();
+        const displayName = getCloudinaryDisplayName(file, index);
+        const publicIdName = slugifyTurkish(displayName) || `fotograf-${Date.now()}-${index + 1}`;
+
+        formData.append("asset_folder", `${BASE_FOLDER}/${guestFolderOnly}`);
+        formData.append("public_id_prefix", `${BASE_FOLDER}/${guestFolderOnly}`);
+        formData.append("public_id", publicIdName);
+        formData.append("filename_override", displayName);
+        formData.append("context", `guestName=${guestName}|folderName=${guestFolderOnly}`);
+
+        formData.append("tags", GALLERY_TAG);
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", url);
+
+        xhr.upload.onprogress = (event) => {
+          if (!event.lengthComputable) return;
+
+          const currentFileProgress = event.loaded / event.total;
+          const overallProgress = Math.round(((index + currentFileProgress) / total) * 100);
+
+          progressBar.style.width = overallProgress + "%";
+          progressPercent.textContent = overallProgress + "%";
+          statusText.textContent = `${index + 1}/${total} yükleniyor: ${file.name}`;
+        };
+
+        xhr.onload = () => {
+          if (xhr.status >= 200 && xhr.status < 300) {
+            try {
+              resolve(JSON.parse(xhr.responseText));
+            } catch (e) {
+              reject(new Error("Cloudinary cevabı okunamadı."));
+            }
+          } else {
+            reject(new Error(xhr.responseText || "Yükleme başarısız oldu."));
+          }
+        };
+
+        xhr.onerror = () => reject(new Error("İnternet bağlantısı veya Cloudinary hatası."));
+        xhr.send(formData);
+      });
+    }
+
+    uploadBtn.addEventListener("click", async () => {
+      if (!selectedFiles.length) {
+        alert("Lütfen en az bir fotoğraf seçiniz.");
+        return;
+      }
+
+      uploadBtn.disabled = true;
+      photosInput.disabled = true;
+      progressArea.style.display = "block";
+      successBox.style.display = "none";
+      progressTitle.textContent = "Yükleniyor...";
+      progressBar.style.width = "0%";
+      progressPercent.textContent = "0%";
+      statusText.textContent = "Hazırlanıyor...";
+
+      const uploaded = [];
+
+      try {
+        for (let i = 0; i < selectedFiles.length; i++) {
+          const result = await uploadOneFile(selectedFiles[i], i, selectedFiles.length);
+          uploaded.push(result);
+        }
+
+        progressBar.style.width = "100%";
+        progressPercent.textContent = "100%";
+        progressTitle.textContent = "Yükleme tamamlandı";
+        statusText.textContent = "Tüm fotoğraflar başarıyla yüklendi.";
+
+        launchConfetti();
+
+        const links = uploaded.map((item, i) => {
+          return `<div>📸 <a href="${item.secure_url}" target="_blank" rel="noopener">Fotoğraf ${i + 1}</a></div>`;
+        }).join("");
+
+        successBox.innerHTML = `
+          <span class="big">🎉</span>
+          Fotoğraflarınız başarıyla yüklendi.<br>
+          Meltem & Hakan teşekkür ediyor ❤️
+          <div class="link-list">${links}</div>
+        `;
+        successBox.style.display = "block";
+        audioQuestion.style.display = "block";
+        giftQuestion.style.display = "none";
+        addActivityToTicker(`📸 ${getShortName(guestName)} ${selectedFiles.length} adet fotoğraf yükledi`);
+
+        mainCard.classList.add("upload-clean-mode");
+
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } catch (error) {
+        alert("Yükleme sırasında hata oluştu: " + error.message);
+        statusText.textContent = "Hata oluştu. Lütfen tekrar deneyin.";
+      } finally {
+        uploadBtn.disabled = false;
+        photosInput.disabled = false;
+      }
+    });
+
+    function showGalleryFolders() {
+      galleryFolderChoice.style.display = "grid";
+      photoGalleryBox.style.display = "none";
+      audioGalleryBox.style.display = "none";
+      galleryGrid.innerHTML = "";
+      audioList.innerHTML = "";
+    }
+
+    async function loadGallery() {
+      galleryFolderChoice.style.display = "none";
+      photoGalleryBox.style.display = "block";
+      audioGalleryBox.style.display = "none";
+      galleryGrid.innerHTML = "";
+      galleryStatus.style.display = "block";
+      galleryStatus.innerHTML = "Fotoğraflar yükleniyor...";
+
+      try {
+        const url = `https://res.cloudinary.com/${CLOUD_NAME}/image/list/${GALLERY_TAG}.json?cb=${Date.now()}`;
+        const response = await fetchWithTimeout(url, 5000);
+
+        if (!response.ok) {
+          throw new Error("Galeri listesi alınamadı.");
+        }
+
+        const data = await response.json();
+        const resources = Array.isArray(data.resources) ? data.resources.slice().reverse() : [];
+
+        if (!resources.length) {
+          galleryStatus.innerHTML = "Henüz fotoğraf yüklenmemiş.";
+          return;
+        }
+
+        galleryStatus.style.display = "none";
+
+        resources.forEach(item => {
+          const thumb = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/c_fill,w_500,h_500,q_auto,f_auto/${item.public_id}.${item.format}`;
+          const full = `https://res.cloudinary.com/${CLOUD_NAME}/image/upload/q_auto,f_auto/${item.public_id}.${item.format}`;
+          const parts = item.public_id.split("/");
+          const uploaderFolder = parts.length >= 2 ? parts[parts.length - 2] : "";
+          const rawName = parts[parts.length - 1] || "";
+          const uploaderName = rawName.includes(" - ") ? getShortName(rawName.split(" - ")[0]) : getShortNameFromSlug(uploaderFolder);
+          const name = `Ekleyen: ${uploaderName}`;
+
+          const card = document.createElement("a");
+          card.href = full;
+          card.target = "_blank";
+          card.rel = "noopener";
+          card.className = "gallery-item";
+          card.innerHTML = `
+            <img src="${thumb}" loading="lazy" alt="">
+            <div class="name">${name}</div>
+          `;
+          galleryGrid.appendChild(card);
+        });
+      } catch (error) {
+        galleryStatus.innerHTML = `
+          Galeri şu an görüntülenemiyor.<br><br>
+          Cloudinary ayarlarında <b>Resource list</b> kapalı olabilir.
+          Bunu açınca yüklenen fotoğraflar burada görünecek.
+        `;
+      }
+    }
+
+    async function loadAudioGallery() {
+      galleryFolderChoice.style.display = "none";
+      photoGalleryBox.style.display = "none";
+      audioGalleryBox.style.display = "block";
+
+      audioList.innerHTML = "";
+      audioGalleryStatus.style.display = "block";
+      audioGalleryStatus.innerHTML = "Sesli notlar yükleniyor...";
+
+      try {
+        const url = `https://res.cloudinary.com/${CLOUD_NAME}/video/list/${AUDIO_TAG}.json?cb=${Date.now()}`;
+        const response = await fetchWithTimeout(url, 5000);
+
+        if (!response.ok) {
+          throw new Error("Sesli not listesi alınamadı.");
+        }
+
+        const data = await response.json();
+        const resources = Array.isArray(data.resources) ? data.resources.slice().reverse() : [];
+
+        if (!resources.length) {
+          audioGalleryStatus.innerHTML = "Henüz sesli not bırakılmamış.";
+          return;
+        }
+
+        audioGalleryStatus.style.display = "none";
+
+        resources.forEach(item => {
+          const full = `https://res.cloudinary.com/${CLOUD_NAME}/video/upload/${item.public_id}.${item.format}`;
+          const parts = item.public_id.split("/");
+          const uploaderFolder = parts.length >= 2 ? parts[parts.length - 2] : "";
+          const rawName = parts[parts.length - 1] || "";
+          const uploaderName = rawName.includes(" - ") ? getShortName(rawName.split(" - ")[0]) : getShortNameFromSlug(uploaderFolder);
+          const name = `Ekleyen: ${uploaderName}`;
+
+          const card = document.createElement("div");
+          card.className = "audio-card";
+          card.innerHTML = `
+            <div class="name">🎙️ ${name}</div>
+            <audio src="${full}" controls preload="none"></audio>
+          `;
+
+          const audioEl = card.querySelector("audio");
+
+          audioEl.addEventListener("play", () => {
+            document.querySelectorAll(".audio-card audio").forEach(other => {
+              if (other !== audioEl) other.pause();
+            });
+          });
+
+          audioList.appendChild(card);
+        });
+      } catch (error) {
+        audioGalleryStatus.innerHTML = `
+          Sesli notlar şu an görüntülenemiyor.<br><br>
+          Cloudinary ayarlarında <b>Resource list</b> kapalı olabilir.
+        `;
+      }
+    }
+
+    audioYes.addEventListener("click", () => {
+      audioQuestion.style.display = "none";
+      audioRecorder.style.display = "block";
+      audioStatus.textContent = "Sesli nota başlamak için butona basın. Mikrofon izni istenirse izin verin.";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    audioNo.addEventListener("click", () => {
+      audioQuestion.style.display = "none";
+      audioRecorder.style.display = "none";
+      giftQuestion.style.display = "block";
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+
+    giftYesAfterUpload.addEventListener("click", () => {
+      ibanCard.style.display = "none";
+      cardPaymentBox.style.display = "none";
+      if (giftMainButtons) giftMainButtons.style.display = "block";
+      showOnly(giftStep);
+      setTimeout(refreshGiftActivitiesOnly, 150);
+    });
+
+    giftNoAfterUpload.addEventListener("click", () => {
+      giftQuestion.style.display = "none";
+    });
+
+    function stopActiveStream() {
+      if (activeStream) {
+        activeStream.getTracks().forEach(track => track.stop());
+        activeStream = null;
+      }
+    }
+
+    function finishRecordingUI() {
+      clearInterval(recordInterval);
+      recordInterval = null;
+      stopActiveStream();
+
+      audioBlob = new Blob(audioChunks, { type: (mediaRecorder && mediaRecorder.mimeType) || "audio/webm" });
+      const audioUrl = URL.createObjectURL(audioBlob);
+
+      audioPreview.src = audioUrl;
+      audioPreview.style.display = "block";
+      uploadAudioBtn.style.display = "block";
+      recordControls.style.display = "none";
+      startRecordBtn.style.display = "block";
+      startRecordBtn.disabled = false;
+      startRecordBtn.textContent = "Tekrar Kaydet";
+      pauseRecordBtn.textContent = "Duraklat";
+      isPaused = false;
+      audioStatus.textContent = "Sesli not tamamlandı. İsterseniz dinleyin, sonra 'Yükle' butonuna basın.";
+    }
+
+    startRecordBtn.addEventListener("click", async () => {
+      try {
+        if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+          alert("Bu tarayıcı ses kaydını desteklemiyor.");
+          return;
+        }
+
+        if (mediaRecorder && mediaRecorder.state === "recording") {
+          return;
+        }
+
+        clearInterval(recordInterval);
+        recordInterval = null;
+        stopActiveStream();
+
+        audioChunks = [];
+        audioBlob = null;
+        secondsLeft = 120;
+        isPaused = false;
+        recordTimer.textContent = "120";
+        audioPreview.style.display = "none";
+        uploadAudioBtn.style.display = "none";
+        pauseRecordBtn.textContent = "Duraklat";
+
+        activeStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+
+        let mimeType = "";
+        if (MediaRecorder.isTypeSupported("audio/webm;codecs=opus")) {
+          mimeType = "audio/webm;codecs=opus";
+        } else if (MediaRecorder.isTypeSupported("audio/webm")) {
+          mimeType = "audio/webm";
+        }
+
+        mediaRecorder = mimeType
+          ? new MediaRecorder(activeStream, { mimeType })
+          : new MediaRecorder(activeStream);
+
+        mediaRecorder.ondataavailable = (event) => {
+          if (event.data && event.data.size > 0) {
+            audioChunks.push(event.data);
+          }
+        };
+
+        mediaRecorder.onstop = finishRecordingUI;
+
+        mediaRecorder.start();
+        startRecordBtn.style.display = "none";
+        recordControls.style.display = "grid";
+        audioStatus.textContent = "Sesli not başladı. Maksimum 2 dakika. İsterseniz duraklatabilir veya durdurabilirsiniz.";
+
+        recordInterval = setInterval(() => {
+          if (isPaused) return;
+
+          secondsLeft -= 1;
+          recordTimer.textContent = String(secondsLeft);
+
+          if (secondsLeft <= 0 && mediaRecorder && mediaRecorder.state === "recording") {
+            mediaRecorder.stop();
+          }
+        }, 1000);
+
+      } catch (error) {
+        clearInterval(recordInterval);
+        recordInterval = null;
+        stopActiveStream();
+        startRecordBtn.style.display = "block";
+        startRecordBtn.disabled = false;
+        recordControls.style.display = "none";
+        audioStatus.textContent = "Mikrofon izni alınamadı veya kayıt başlatılamadı.";
+        alert("Mikrofon erişimi verilmedi veya tarayıcı izin vermedi.");
+      }
+    });
+
+    pauseRecordBtn.addEventListener("click", () => {
+      if (!mediaRecorder) return;
+
+      if (mediaRecorder.state === "recording") {
+        mediaRecorder.pause();
+        isPaused = true;
+        pauseRecordBtn.textContent = "Devam Et";
+        audioStatus.textContent = "Sesli not duraklatıldı. Devam etmek için 'Devam Et' butonuna basın.";
+      } else if (mediaRecorder.state === "paused") {
+        mediaRecorder.resume();
+        isPaused = false;
+        pauseRecordBtn.textContent = "Duraklat";
+        audioStatus.textContent = "Sesli not devam ediyor.";
+      }
+    });
+
+    stopRecordBtn.addEventListener("click", () => {
+      if (mediaRecorder && (mediaRecorder.state === "recording" || mediaRecorder.state === "paused")) {
+        mediaRecorder.stop();
+      }
+    });
+
+    uploadAudioBtn.addEventListener("click", async () => {
+      if (!audioBlob) {
+        alert("Önce sesli not oluşturmalısınız.");
+        return;
+      }
+
+      uploadAudioBtn.disabled = true;
+      uploadAudioBtn.textContent = "Ses yükleniyor...";
+      audioStatus.textContent = "Sesli not Cloudinary'ye yükleniyor...";
+
+      try {
+        const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/auto/upload`;
+        const formData = new FormData();
+
+        const guestFolderOnly = getGuestFolderOnly();
+        const audioDisplayName = `${guestName} - ${getUploadStamp()} - sesli-not`;
+        const audioPublicId = slugifyTurkish(audioDisplayName) || `sesli-not-${Date.now()}`;
+
+        formData.append("file", audioBlob, `${audioDisplayName}.webm`);
+        formData.append("upload_preset", UPLOAD_PRESET);
+        formData.append("asset_folder", `${AUDIO_BASE_FOLDER}/${guestFolderOnly}`);
+        formData.append("public_id_prefix", `${AUDIO_BASE_FOLDER}/${guestFolderOnly}`);
+        formData.append("public_id", audioPublicId);
+        formData.append("filename_override", audioDisplayName);
+        formData.append("context", `guestName=${guestName}|folderName=${guestFolderOnly}`);
+        formData.append("tags", AUDIO_TAG);
+
+        const response = await fetchWithTimeout(url, 7000, { method: "POST", body: formData });
+
+        if (!response.ok) {
+          const text = await response.text();
+          throw new Error(text || "Sesli not yüklenemedi.");
+        }
+
+        const result = await response.json();
+
+        audioBlob = null;
+        audioChunks = [];
+        audioPreview.removeAttribute("src");
+        audioPreview.style.display = "none";
+        uploadAudioBtn.style.display = "none";
+
+        audioStatus.innerHTML = `✅ Sesli notunuz başarıyla yüklendi.`;
+        addActivityToTicker(`🎙️ ${getShortName(guestName)} 1 adet sesli not bıraktı`);
+
+        audioRecorder.style.display = "none";
+        startRecordBtn.style.display = "none";
+        recordControls.style.display = "none";
+        uploadAudioBtn.style.display = "none";
+        audioPreview.style.display = "none";
+
+        giftQuestion.style.display = "block";
+        uploadAudioBtn.textContent = "Yükle";
+      } catch (error) {
+        alert("Sesli not yükleme sırasında hata oluştu: " + error.message);
+        audioStatus.textContent = "Sesli not yüklenemedi. Lütfen tekrar deneyin.";
+        uploadAudioBtn.textContent = "Yükle";
+        uploadAudioBtn.style.display = "block";
+      } finally {
+        uploadAudioBtn.disabled = false;
+      }
+    });
+
+    const fallbackGiftActivities = [
+      "💝 Ahmet Yı. 400 ₺ takı taktı",
+      "💝 Fatma Ka. 500 ₺ takı taktı",
+      "💝 Volkan Ar. 600 ₺ takı taktı",
+      "💝 Merve De. 750 ₺ takı taktı",
+      "💝 Ali Tu. 800 ₺ takı taktı",
+      "💝 Esra Se. 900 ₺ takı taktı",
+      "💝 Burak Er. 1000 ₺ takı taktı",
+      "💝 Hatice Gü. 1100 ₺ takı taktı",
+      "💝 Can Ba. 1200 ₺ takı taktı",
+      "💝 Kübra Me. 1300 ₺ takı taktı",
+      "💝 Serkan Öz. 1400 ₺ takı taktı",
+      "💝 Büşra Ça. 1500 ₺ takı taktı",
+      "💝 Onur Pa. 1600 ₺ takı taktı",
+      "💝 Derya Nu. 1700 ₺ takı taktı",
+      "💝 Yusuf Ro. 1800 ₺ takı taktı",
+      "💝 Gamze La. 1900 ₺ takı taktı",
+      "💝 Eren Ce. 2000 ₺ takı taktı",
+      "💝 Sema Ha. 2200 ₺ takı taktı",
+      "💝 Kerem Uz. 2400 ₺ takı taktı",
+      "💝 Tuğba Iş. 2600 ₺ takı taktı",
+      "💝 Oğuz Fi. 2800 ₺ takı taktı",
+      "💝 Deniz Ve. 3000 ₺ takı taktı"
+    ];
+
+    let liveActivities = [];
+    let liveGiftActivities = [];
+    let tickerIndex = 0;
+
+    function getTickerItems() {
+      const giftFillers = liveGiftActivities.length < 5
+        ? fallbackGiftActivities.slice(0, 5 - liveGiftActivities.length)
+        : [];
+
+      return [
+        ...liveActivities,
+        ...liveGiftActivities,
+        ...giftFillers
+      ];
+    }
+
+    function updateTickerNow() {
+      const items = getTickerItems();
+
+      if (!items.length) {
+        if (activityTickerText) activityTickerText.textContent = "🌸 Henüz hareket yok.";
+        return;
+      }
+
+      const text = items[tickerIndex % items.length];
+      tickerIndex++;
+
+      if (activityTickerText) {
+        activityTickerText.style.animation = "none";
+        activityTickerText.offsetHeight;
+        activityTickerText.textContent = text;
+        activityTickerText.style.animation = "";
+      }
+    }
+
+    function addActivityToTicker(message) {
+      liveActivities.unshift(message);
+      liveActivities = liveActivities.slice(0, 10);
+      tickerIndex = 0;
+      updateTickerNow();
+    }
+
+    function fetchWithTimeout(url, timeoutMs, options) {
+      return new Promise((resolve, reject) => {
+        const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+        const timer = setTimeout(() => {
+          if (controller) controller.abort();
+          reject(new Error("İstek zaman aşımına uğradı."));
+        }, timeoutMs);
+
+        const fetchOptions = Object.assign({ cache: "no-store" }, options || {});
+        if (controller) fetchOptions.signal = controller.signal;
+
+        fetch(url, fetchOptions)
+          .then(resolve)
+          .catch(reject)
+          .finally(() => clearTimeout(timer));
+      });
+    }
+
+    async function fetchJsonList(resourceType, tag) {
+      const url = `https://res.cloudinary.com/${CLOUD_NAME}/${resourceType}/list/${tag}.json?cb=${Date.now()}`;
+      const response = await fetchWithTimeout(url, 4500);
+
+      if (!response.ok) {
+        throw new Error("Cloudinary listesi alınamadı.");
+      }
+
+      const data = await response.json();
+      return Array.isArray(data.resources) ? data.resources : [];
+    }
+
+    async function fetchJsonListSafe(resourceType, tag) {
+      try {
+        return await fetchJsonList(resourceType, tag);
+      } catch (error) {
+        return [];
+      }
+    }
+
+    function parseGiftFromPublicId(publicId) {
+      const last = String(publicId || "").split("/").pop() || "";
+      const match = last.match(/^gift-(.+)-([0-9]+)-([0-9]+)$/);
+
+      if (!match) return null;
+
+      return {
+        name: getShortNameFromSlug(match[1]),
+        amount: Number(match[2]),
+        time: Number(match[3])
+      };
+    }
+
+    async function refreshGiftActivitiesOnly() {
+      const gifts = await fetchJsonListSafe("raw", GIFT_TAG);
+
+      liveGiftActivities = gifts
+        .map(item => parseGiftFromPublicId(item.public_id))
+        .filter(Boolean)
+        .filter(item => !(String(item.name).toLocaleLowerCase("tr-TR") === "tasdasd" && Number(item.amount) === 5000))
+        .sort((a, b) => b.time - a.time)
+        .map(item => `💝 ${item.name} ${formatTL(item.amount)} takı taktı`);
+
+      updateTickerNow();
+    }
+
+    async function recordGiftActivity(amount, method) {
+      if (!guestName) {
+        alert("Lütfen önce adınızı yazın.");
+        showOnly(nameStep);
+        throw new Error("İsim gerekli.");
+      }
+
+      const cleanAmount = Math.round(Number(amount));
+
+      if (!cleanAmount || cleanAmount <= 0) {
+        throw new Error("Geçerli miktar gerekli.");
+      }
+
+      const time = Date.now();
+      const guestSlug = getGuestFolderOnly();
+      const publicId = `gift-${guestSlug}-${cleanAmount}-${time}`;
+      const message = `💝 ${getShortName(guestName)} ${formatTL(cleanAmount)} takı taktı`;
+      const payload = JSON.stringify({
+        guestName,
+        amount: cleanAmount,
+        method,
+        createdAt: new Date(time).toISOString()
+      });
+
+      const blob = new Blob([payload], { type: "application/json" });
+      const url = `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/raw/upload`;
+      const formData = new FormData();
+
+      formData.append("file", blob, `${publicId}.json`);
+      formData.append("upload_preset", UPLOAD_PRESET);
+      formData.append("asset_folder", `${GIFT_BASE_FOLDER}/${guestSlug}`);
+      formData.append("public_id_prefix", `${GIFT_BASE_FOLDER}/${guestSlug}`);
+      formData.append("public_id", publicId);
+      formData.append("filename_override", `${guestName} - ${formatTL(cleanAmount)} takı`);
+      formData.append("context", `guestName=${guestName}|amount=${cleanAmount}|method=${method}`);
+      formData.append("tags", GIFT_TAG);
+
+      const response = await fetchWithTimeout(url, 7000, { method: "POST", body: formData });
+
+      if (!response.ok) {
+        const text = await response.text();
+        throw new Error(text || "Takı kaydı yüklenemedi.");
+      }
+
+      liveGiftActivities.unshift(message);
+      liveGiftActivities = liveGiftActivities.slice(0, 40);
+      addActivityToTicker(message);
+      setTimeout(refreshGiftActivitiesOnly, 800);
+    }
+
+    function initializeSavedGuest() {
+      try {
+        const savedName = localStorage.getItem("meltemHakanGuestName");
+
+        if (!savedName) return;
+
+        const savedParts = normalizeName(savedName).split(" ").filter(Boolean);
+        guestNameInput.value = savedName;
+
+        if (savedParts.length < 2) {
+          localStorage.removeItem("meltemHakanGuestName");
+          return;
+        }
+
+        guestName = savedName;
+        choiceTitle.innerHTML = `Hoş geldiniz, <span style="color:#b83270">${guestName}</span>`;
+        showOnly(choiceStep);
+      } catch (error) {}
+    }
+
+    initializeSavedGuest();
+    updateTickerNow();
+    setInterval(updateTickerNow, 2600);
+
+    function createFallingItem() {
+      const item = document.createElement("div");
+      item.className = "falling";
+
+      const symbols = ["❤️", "💕", "🌸", "✨", "💍", "🌷"];
+      item.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+      item.style.left = Math.random() * 100 + "vw";
+      item.style.fontSize = (15 + Math.random() * 20) + "px";
+      item.style.animationDuration = (6 + Math.random() * 7) + "s";
+
+      document.body.appendChild(item);
+      setTimeout(() => item.remove(), 14000);
+    }
+
+    setInterval(createFallingItem, 3000);
+
+    function launchConfetti() {
+      const colors = ["#d45a94", "#8f3b76", "#c4934c", "#ffb3c7", "#ffffff", "#7b294e"];
+
+      for (let i = 0; i < 90; i++) {
+        const c = document.createElement("div");
+        c.className = "confetti";
+        c.style.left = Math.random() * 100 + "vw";
+        c.style.background = colors[Math.floor(Math.random() * colors.length)];
+        c.style.animationDuration = (1.8 + Math.random() * 1.8) + "s";
+        c.style.transform = `rotate(${Math.random() * 360}deg)`;
+        document.body.appendChild(c);
+        setTimeout(() => c.remove(), 4000);
+      }
+    }
+  </script>
+</body>
+</html>
