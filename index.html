@@ -813,6 +813,24 @@
       font-size: 14px;
     }
 
+    .music {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 5;
+      width: 52px;
+      height: 52px;
+      display: grid;
+      place-items: center;
+      border-radius: 50%;
+      border: 1px solid rgba(255,255,255,.8);
+      background: rgba(255,255,255,.75);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 14px 35px rgba(120,50,85,.18);
+      cursor: pointer;
+      font-size: 22px;
+    }
+
     .confetti {
       position: fixed;
       width: 10px;
@@ -849,6 +867,11 @@
 </head>
 
 <body>
+  <button class="music" id="musicBtn" title="Müzik">🎵</button>
+  <audio id="music" loop preload="auto" playsinline>
+    <source src="https://res.cloudinary.com/kkj1zmsg/video/upload/v1783519753/foto1_fzsxda.mp3" type="audio/mpeg">
+  </audio>
+
   <main class="page">
     <section class="card" id="mainCard">
       <div class="ring"><span>💍</span></div>
@@ -856,7 +879,7 @@
 
       <h1 class="main-title"><span class="couple-only">Meltem & Hakan</span><span class="full-title-extra">'ın<br>Nişanına Hoşgeldiniz</span></h1>
 
-      <div class="date">📅 15.07.2026</div>
+      <div class="date">📅 16.07.2026</div>
 
       <p class="subtitle">
         Bu güzel günümüzden karelerinizi bizimle paylaşın.
@@ -1150,6 +1173,9 @@
     const audioGalleryStatus = document.getElementById("audioGalleryStatus");
     const audioList = document.getElementById("audioList");
 
+    const musicBtn = document.getElementById("musicBtn");
+    const music = document.getElementById("music");
+
     let guestName = "";
     let folderName = "";
     let selectedFiles = [];
@@ -1160,6 +1186,7 @@
     let secondsLeft = 120;
     let isPaused = false;
     let activeStream = null;
+    let musicWasPlayingBeforeVoiceNote = false;
 
     function normalizeName(value) {
       return value
@@ -1298,6 +1325,7 @@
       const choiceGrid = document.querySelector(".choice-grid");
       const footer = document.querySelector(".footer");
 
+      // Menü ekranında kayan yazıyı yukarı (butonların üstüne) alır, diğer sayfalarda yine alta koyar.
       if (globalTicker && choiceGrid && footer) {
         if (step === choiceStep) {
           choiceStep.insertBefore(globalTicker, choiceGrid);
@@ -1731,12 +1759,31 @@
           `;
 
           const audioEl = card.querySelector("audio");
+          audioEl.dataset.musicWasPlaying = "false";
 
           audioEl.addEventListener("play", () => {
+            audioEl.dataset.musicWasPlaying = (!music.paused && !userPausedMusic) ? "true" : "false";
+            if (!music.paused) {
+              music.pause();
+              musicBtn.textContent = "🎵";
+            }
+
             document.querySelectorAll(".audio-card audio").forEach(other => {
               if (other !== audioEl) other.pause();
             });
           });
+
+          function resumeMusicAfterAudio() {
+            if (audioEl.dataset.musicWasPlaying === "true" && !userPausedMusic) {
+              music.play().then(() => {
+                musicBtn.textContent = "⏸️";
+              }).catch(() => {});
+            }
+            audioEl.dataset.musicWasPlaying = "false";
+          }
+
+          audioEl.addEventListener("pause", resumeMusicAfterAudio);
+          audioEl.addEventListener("ended", resumeMusicAfterAudio);
 
           audioList.appendChild(card);
         });
@@ -1761,6 +1808,27 @@
       giftQuestion.style.display = "block";
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
+
+    audioPreview.addEventListener("play", () => {
+      audioPreview.dataset.musicWasPlaying = (!music.paused && !userPausedMusic) ? "true" : "false";
+      if (!music.paused) {
+        music.pause();
+        musicBtn.textContent = "🎵";
+      }
+    });
+
+    function resumeMusicAfterPreview() {
+      if (audioPreview.dataset.musicWasPlaying === "true" && !userPausedMusic) {
+        music.play().then(() => {
+          musicBtn.textContent = "⏸️";
+        }).catch(() => {});
+      }
+      audioPreview.dataset.musicWasPlaying = "false";
+    }
+
+    audioPreview.addEventListener("pause", resumeMusicAfterPreview);
+    audioPreview.addEventListener("ended", resumeMusicAfterPreview);
+
 
     giftYesAfterUpload.addEventListener("click", () => {
       ibanCard.style.display = "none";
@@ -1799,6 +1867,13 @@
       pauseRecordBtn.textContent = "Duraklat";
       isPaused = false;
       audioStatus.textContent = "Sesli not tamamlandı. İsterseniz dinleyin, sonra 'Yükle' butonuna basın.";
+
+      if (musicWasPlayingBeforeVoiceNote && !userPausedMusic) {
+        music.play().then(() => {
+          musicBtn.textContent = "⏸️";
+        }).catch(() => {});
+      }
+      musicWasPlayingBeforeVoiceNote = false;
     }
 
     startRecordBtn.addEventListener("click", async () => {
@@ -1845,6 +1920,12 @@
         };
 
         mediaRecorder.onstop = finishRecordingUI;
+
+        musicWasPlayingBeforeVoiceNote = (!music.paused && !userPausedMusic);
+        if (!music.paused) {
+          music.pause();
+          musicBtn.textContent = "🎵";
+        }
 
         mediaRecorder.start();
         startRecordBtn.style.display = "none";
@@ -2194,6 +2275,55 @@
         setTimeout(() => c.remove(), 4000);
       }
     }
+
+    let musicStarted = false;
+    let userPausedMusic = false;
+
+    async function tryStartMusic() {
+      const source = music.querySelector("source").getAttribute("src");
+      if (!source || userPausedMusic || musicStarted) return;
+
+      try {
+        music.volume = 0.55;
+        await music.play();
+        musicStarted = true;
+        musicBtn.textContent = "⏸️";
+      } catch (e) {
+      }
+    }
+
+    window.addEventListener("load", tryStartMusic);
+    document.addEventListener("DOMContentLoaded", tryStartMusic);
+
+    ["pointerdown", "touchstart", "click", "keydown", "focusin"].forEach((eventName) => {
+      document.addEventListener(eventName, () => {
+        tryStartMusic();
+      }, { passive: true });
+    });
+
+    musicBtn.addEventListener("click", async (event) => {
+      event.stopPropagation();
+
+      try {
+        if (!music.querySelector("source").getAttribute("src")) {
+          alert("Müzik eklemek için HTML içindeki audio source src kısmına mp3 linki koymalısın.");
+          return;
+        }
+
+        if (!music.paused) {
+          userPausedMusic = true;
+          music.pause();
+          musicBtn.textContent = "🎵";
+        } else {
+          userPausedMusic = false;
+          await music.play();
+          musicStarted = true;
+          musicBtn.textContent = "⏸️";
+        }
+      } catch (e) {
+        alert("Tarayıcı müziği başlatamadı. Ekrana bir kez dokunup tekrar deneyin.");
+      }
+    });
   </script>
 </body>
 </html>
