@@ -5,69 +5,6 @@
 
 
 <!DOCTYPE html>
-<style>
-  .otomatik-cikis-btn {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    background: rgba(255, 255, 255, 0.9);
-    border: 1px solid #f1c7da;
-    color: #7b294e;
-    padding: 6px 14px;
-    font-size: 12px;
-    font-weight: 800;
-    border-radius: 50px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    z-index: 9999;
-    box-shadow: 0 4px 10px rgba(120, 50, 85, 0.1);
-    display: none; /* İlk başta gizli kalması için */
-  }
-  .otomatik-cikis-btn:hover {
-    background: #7b294e;
-    color: white;
-    border-color: #7b294e;
-    transform: translateY(-1px);
-  }
-</style>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function() {
-    // Sayfanızdaki ana kartı (.card) otomatik olarak buluyoruz
-    var anaKart = document.querySelector('.card');
-    
-    if (anaKart) {
-      // Çıkış yap butonunu oluşturuyoruz
-      var cikisButonu = document.createElement('button');
-      cikisButonu.className = 'otomatik-cikis-btn';
-      cikisButonu.innerText = 'Çıkış Yap';
-      
-      // Butona tıklandığında yapılacak işlemler (Sıfırlayıp en başa atar)
-      cikisButonu.onclick = function() {
-        window.location.reload(); // Sayfayı yenileyerek girilen ismi kapatır ve tertemiz en başa döndürür
-      };
-      
-      // Butonu kartın içerisine yerleştiriyoruz
-      anaKart.appendChild(cikisButonu);
-      
-      // Akıllı Takip: İsim yazma ekranındaysa butonu gizler, giriş yapınca gösterir
-      setInterval(function() {
-        var isimInputu = document.querySelector('.input');
-        if (isimInputu) {
-          // Eğer isim yazılan kutu ekranda görünüyorsa (henüz giriş yapılmamıştır) butonu gizle
-          if (isimInputu.offsetParent !== null) {
-            cikisButonu.style.display = 'none';
-          } else {
-            // İsim kutusu gizlendiyse (kullanıcı içeri girdiyse) butonu sağ üstte göster
-            cikisButonu.style.display = 'block';
-          }
-        } else {
-          cikisButonu.style.display = 'block';
-        }
-      }, 400);
-    }
-  });
-</script>
 <html
   lang="en"
   
