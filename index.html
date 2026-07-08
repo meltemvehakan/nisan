@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Meltem & Hakan'ın Nişanı</title>
 
-  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=gO8Gv56J6xo9KeYw07hHITdzQ_h7JFpCvi8D1qajOCNVyEO_xN6fiKRjaKbxLp_QLZAfXd8CEg4424rgxaSMqX6BXgD0JvYN69rUvBZTvVl1PEc_Ru_iuD31u4zxOJWWeO7vovcYNUBCe00kONf81Etg1C4W6djFHwhUYrm9u8trViz5eJ4VfUPFxvrstd_YXfwOUf94YLW6xlrmb_TIXSeb3Cawyx3TzmCscvLjcamyjJBTdfmMx0VK3SCNlds5WLmfh2JRAPQH3zTHkcm6db26EIELYDkmg-swYOi9XWjqOegoZYQJK1kEnaXMDUgqgPEgqBLX5WEfYNWsA9Mnpg" charset="UTF-8"></script><style>
+  <style>
     * { box-sizing: border-box; }
 
     :root {
@@ -357,6 +357,7 @@
     .top-upload-panel.active { display: block; }
 
     .folder-preview {
+      display: none;
       margin: 0 0 13px;
       padding: 13px 14px;
       background: white;
@@ -506,10 +507,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .gift-step-ticker {
-      margin-top: 16px;
-    }
-
     .gift-amount-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
@@ -552,13 +549,6 @@
       font-weight: 700;
       text-align: center;
     }
-
-    @media (max-width: 520px) {
-      .gift-amount-grid {
-        grid-template-columns: repeat(2, 1fr);
-      }
-    }
-
 
     .link-list {
       margin-top: 12px;
@@ -668,8 +658,6 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
-
 
     .gift-box {
       margin-top: 16px;
@@ -873,14 +861,15 @@
       .gallery-choice-grid { grid-template-columns: 1fr; }
       .btn.small { width: 100%; }
       .audio-actions { grid-template-columns: 1fr; }
+      .gift-amount-grid { grid-template-columns: repeat(2, 1fr); }
     }
   </style>
 </head>
 
 <body>
   <button class="music" id="musicBtn" title="Müzik">🎵</button>
-  <audio id="music" loop preload="auto" autoplay playsinline>
-    <source src="https://res.cloudinary.com/kkj1zmsg/video/upload/v1783331587/foto_cybuop.mp3" type="audio/mpeg">
+  <audio id="music" loop preload="auto" playsinline>
+    <source src="https://res.cloudinary.com/kkj1zmsg/video/upload/v1783519753/foto1_fzsxda.mp3" type="audio/mpeg">
   </audio>
 
   <main class="page">
@@ -890,7 +879,7 @@
 
       <h1 class="main-title"><span class="couple-only">Meltem & Hakan</span><span class="full-title-extra">'ın<br>Nişanına Hoşgeldiniz</span></h1>
 
-      <div class="date">📅 15.07.2026</div>
+      <div class="date">📅 16.07.2026</div>
 
       <p class="subtitle">
         Bu güzel günümüzden karelerinizi bizimle paylaşın.
@@ -905,6 +894,7 @@
 
       <div id="choiceStep" class="step" style="display:none;">
         <h2 class="choice-title" id="choiceTitle"></h2>
+        
         <div class="choice-grid">
           <div class="choice-card" id="goUpload">
             <div class="choice-icon">📤</div>
@@ -931,7 +921,7 @@
         <h2 class="hello" id="helloText"></h2>
 
         <div class="top-upload-panel active" id="topPanel">
-          <div class="folder-preview" id="folderPreview"></div>
+          <div class="folder-preview" id="folderPreview" style="display:none;"></div>
 
           <div id="progressArea" style="display:none;">
             <div class="mini-info">
@@ -1044,10 +1034,6 @@
             <button class="btn secondary" id="payCardBtn" type="button">Kredi Kartıyla Öde</button>
           </div>
 
-          <div class="activity-ticker gift-step-ticker">
-            <span id="giftTickerText">💝 Takı hareketleri yükleniyor...</span>
-          </div>
-
           <div id="cardPaymentBox" class="iban-card">
             <button class="btn secondary small" id="backToGiftChoicesFromCard" type="button">← Ödeme Seçenekleri</button>
             <p class="gift-note">Takı miktarını seçin. Seçince hareketlerde adınız ve miktarınız görünecek, ardından ödeme sayfası açılacak.</p>
@@ -1056,6 +1042,7 @@
 
           <div class="iban-card" id="ibanCard">
             <button class="btn secondary small" id="backToGiftChoicesFromIban" type="button">← Ödeme Seçenekleri</button>
+
             <div class="copy-row">
               <div>
                 <small>Alıcı Adı</small>
@@ -1082,7 +1069,7 @@
         </div>
       </div>
 
-      <div class="activity-ticker">
+      <div class="activity-ticker" id="globalTicker">
         <span id="activityTickerText">🌸 Hatıra hareketleri yükleniyor...</span>
       </div>
 
@@ -1158,7 +1145,6 @@
     const giftYesAfterUpload = document.getElementById("giftYesAfterUpload");
     const giftNoAfterUpload = document.getElementById("giftNoAfterUpload");
     const activityTickerText = document.getElementById("activityTickerText");
-    const giftTickerText = document.getElementById("giftTickerText");
 
     const backFromUpload = document.getElementById("backFromUpload");
     const backFromGallery = document.getElementById("backFromGallery");
@@ -1225,12 +1211,12 @@
       return String(value || "")
         .trim()
         .toLocaleLowerCase("tr-TR")
-        .replaceAll("ı", "i")
-        .replaceAll("ğ", "g")
-        .replaceAll("ü", "u")
-        .replaceAll("ş", "s")
-        .replaceAll("ö", "o")
-        .replaceAll("ç", "c")
+        .replace(/ı/g, "i")
+        .replace(/ğ/g, "g")
+        .replace(/ü/g, "u")
+        .replace(/ş/g, "s")
+        .replace(/ö/g, "o")
+        .replace(/ç/g, "c")
         .replace(/[^a-z0-9]+/g, "-")
         .replace(/-+/g, "-")
         .replace(/^-|-$/g, "");
@@ -1264,15 +1250,26 @@
       return `${guestName} - ${getUploadStamp()} - ${String(index + 1).padStart(2, "0")} - ${originalBase}`;
     }
 
+    function cleanPublicIdPart(value) {
+      return decodeURIComponent(String(value || ""))
+        .replace(/-/g, " ")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function titleName(value) {
+      const cleaned = cleanPublicIdPart(value);
+      return cleaned
+        ? cleaned.split(" ").map(part => part ? part.charAt(0).toLocaleUpperCase("tr-TR") + part.slice(1) : "").join(" ")
+        : "Misafir";
+    }
+
     function makeDisplayName(firstName, lastName) {
       const first = titleName(firstName);
       const last = titleName(lastName);
 
       if (!last) return first || "Misafir";
 
-      // Karışıklık olmasın diye soyadın ilk 2 harfini gösteriyoruz:
-      // Hakan Ayaş -> Hakan Ay.
-      // Hakan Arar -> Hakan Ar.
       const lastPrefix = last.slice(0, 2);
 
       return `${first} ${lastPrefix}.`;
@@ -1305,6 +1302,9 @@
       return makeDisplayName(firstName, lastName);
     }
 
+    function formatTL(amount) {
+      return Number(amount || 0).toLocaleString("tr-TR") + " ₺";
+    }
 
     function showOnly(step) {
       nameStep.style.display = "none";
@@ -1315,13 +1315,29 @@
 
       mainCard.classList.remove("compact-mode", "upload-clean-mode");
 
-      // Girişten sonraki menülerde başlık küçük "Meltem & Hakan" olur,
-      // uzun açıklama ve tarih gizlenir.
       if (step !== nameStep) {
         mainCard.classList.add("compact-mode");
       }
 
       step.style.display = "block";
+      
+      const globalTicker = document.getElementById("globalTicker");
+      const choiceGrid = document.querySelector(".choice-grid");
+      const footer = document.querySelector(".footer");
+
+      // Menü ekranında kayan yazıyı yukarı (butonların üstüne) alır, diğer sayfalarda yine alta koyar.
+      if (globalTicker && choiceGrid && footer) {
+        if (step === choiceStep) {
+          choiceStep.insertBefore(globalTicker, choiceGrid);
+          globalTicker.style.marginTop = "0";
+          globalTicker.style.marginBottom = "18px";
+        } else {
+          mainCard.insertBefore(globalTicker, footer);
+          globalTicker.style.marginTop = "18px";
+          globalTicker.style.marginBottom = "0";
+        }
+      }
+
       window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
@@ -1347,8 +1363,11 @@
       }
 
       guestName = cleanName;
-      localStorage.setItem("meltemHakanGuestName", guestName);
-      choiceTitle.innerHTML = `Hoş geldiniz, <span style="color:#b83270">${guestName}</span> 🌸<br><small style="font-size:15px;color:#7a5b69;">Ne yapmak istersiniz?</small>`;
+      try {
+        localStorage.setItem("meltemHakanGuestName", guestName);
+      } catch (error) {}
+
+      choiceTitle.innerHTML = `Hoş geldiniz, <span style="color:#b83270">${guestName}</span>`;
       showOnly(choiceStep);
     });
 
@@ -1357,11 +1376,8 @@
     });
 
     goUpload.addEventListener("click", () => {
-      // Cloudinary Media Library'de klasör isme göre oluşsun diye klasör adı sadece kişinin adı.
-      // Tarih/saat dosya adında gösteriliyor.
       folderName = getGuestFolderOnly();
       helloText.innerHTML = `Fotoğraf yükleme alanı 📤`;
-      folderPreview.textContent = `📁 ${BASE_FOLDER}/${folderName} | Ekleyen: ${guestName}`;
       showOnly(uploadStep);
       mainCard.classList.remove("upload-clean-mode");
     });
@@ -1380,7 +1396,7 @@
       cardPaymentBox.style.display = "none";
       if (giftMainButtons) giftMainButtons.style.display = "block";
       showOnly(giftStep);
-      refreshLiveActivities();
+      setTimeout(refreshGiftActivitiesOnly, 150);
     });
 
     showIbanBtn.addEventListener("click", () => {
@@ -1409,7 +1425,6 @@
       backToGiftChoicesFromIban.addEventListener("click", showGiftMainChoices);
     }
 
-
     document.querySelectorAll(".copy-btn").forEach(button => {
       button.addEventListener("click", async () => {
         const text = button.getAttribute("data-copy");
@@ -1436,7 +1451,10 @@
         button.className = "gift-amount-btn";
         button.textContent = `${item.amount.toLocaleString("tr-TR")} ₺`;
         button.addEventListener("click", async () => {
-          await recordGiftActivity(item.amount, "kredi-karti");
+          try {
+            await recordGiftActivity(item.amount, "kredi-karti");
+          } catch (error) {
+          }
           window.location.href = item.url;
         });
         giftAmountGrid.appendChild(button);
@@ -1535,10 +1553,6 @@
         formData.append("file", file);
         formData.append("upload_preset", UPLOAD_PRESET);
 
-        // Cloudinary Asset bölümünde isim isim görünmesi için:
-        // 1) asset_folder: Media Library'de kişiye özel klasör oluşturur.
-        // 2) public_id_prefix: URL/public_id tarafında da kişiye özel klasör oluşturur.
-        // 3) public_id + display_name + filename_override: kart üzerinde görünen adın kişinin adıyla başlamasını sağlar.
         const guestFolderOnly = getGuestFolderOnly();
         const displayName = getCloudinaryDisplayName(file, index);
         const publicIdName = slugifyTurkish(displayName) || `fotograf-${Date.now()}-${index + 1}`;
@@ -1549,7 +1563,6 @@
         formData.append("filename_override", displayName);
         formData.append("context", `guestName=${guestName}|folderName=${guestFolderOnly}`);
 
-        // Galeride listeleyebilmek için etiket.
         formData.append("tags", GALLERY_TAG);
 
         const xhr = new XMLHttpRequest();
@@ -1628,7 +1641,6 @@
         giftQuestion.style.display = "none";
         addActivityToTicker(`📸 ${getShortName(guestName)} ${selectedFiles.length} adet fotoğraf yükledi`);
 
-        // Yükleme bitince üstte sadece yüzük ve "Nişan Hatırası" kalsın.
         mainCard.classList.add("upload-clean-mode");
 
         window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1659,7 +1671,7 @@
 
       try {
         const url = `https://res.cloudinary.com/${CLOUD_NAME}/image/list/${GALLERY_TAG}.json?cb=${Date.now()}`;
-        const response = await fetch(url);
+        const response = await fetchWithTimeout(url, 5000);
 
         if (!response.ok) {
           throw new Error("Galeri listesi alınamadı.");
@@ -1681,7 +1693,7 @@
           const parts = item.public_id.split("/");
           const uploaderFolder = parts.length >= 2 ? parts[parts.length - 2] : "";
           const rawName = parts[parts.length - 1] || "";
-          const uploaderName = rawName.includes(" - ") ? rawName.split(" - ")[0] : uploaderFolder.replace(/-/g, " ");
+          const uploaderName = rawName.includes(" - ") ? getShortName(rawName.split(" - ")[0]) : getShortNameFromSlug(uploaderFolder);
           const name = `Ekleyen: ${uploaderName}`;
 
           const card = document.createElement("a");
@@ -1704,7 +1716,6 @@
       }
     }
 
-
     async function loadAudioGallery() {
       galleryFolderChoice.style.display = "none";
       photoGalleryBox.style.display = "none";
@@ -1716,7 +1727,7 @@
 
       try {
         const url = `https://res.cloudinary.com/${CLOUD_NAME}/video/list/${AUDIO_TAG}.json?cb=${Date.now()}`;
-        const response = await fetch(url);
+        const response = await fetchWithTimeout(url, 5000);
 
         if (!response.ok) {
           throw new Error("Sesli not listesi alınamadı.");
@@ -1737,7 +1748,7 @@
           const parts = item.public_id.split("/");
           const uploaderFolder = parts.length >= 2 ? parts[parts.length - 2] : "";
           const rawName = parts[parts.length - 1] || "";
-          const uploaderName = rawName.includes(" - ") ? rawName.split(" - ")[0] : uploaderFolder.replace(/-/g, " ");
+          const uploaderName = rawName.includes(" - ") ? getShortName(rawName.split(" - ")[0]) : getShortNameFromSlug(uploaderFolder);
           const name = `Ekleyen: ${uploaderName}`;
 
           const card = document.createElement("div");
@@ -1757,7 +1768,6 @@
               musicBtn.textContent = "🎵";
             }
 
-            // Aynı anda birden fazla sesli not çalmasın.
             document.querySelectorAll(".audio-card audio").forEach(other => {
               if (other !== audioEl) other.pause();
             });
@@ -1785,18 +1795,8 @@
       }
     }
 
-
     audioYes.addEventListener("click", () => {
-      // Kullanıcı sesli not bırakmayı seçince müzik tamamen durur.
-      userPausedMusic = true;
-      musicWasPlayingBeforeVoiceNote = false;
-      if (!music.paused) {
-        music.pause();
-        musicBtn.textContent = "🎵";
-      }
-
       audioQuestion.style.display = "none";
-      giftQuestion.style.display = "none";
       audioRecorder.style.display = "block";
       audioStatus.textContent = "Sesli nota başlamak için butona basın. Mikrofon izni istenirse izin verin.";
       window.scrollTo({ top: 0, behavior: "smooth" });
@@ -1809,12 +1809,33 @@
       window.scrollTo({ top: 0, behavior: "smooth" });
     });
 
+    audioPreview.addEventListener("play", () => {
+      audioPreview.dataset.musicWasPlaying = (!music.paused && !userPausedMusic) ? "true" : "false";
+      if (!music.paused) {
+        music.pause();
+        musicBtn.textContent = "🎵";
+      }
+    });
+
+    function resumeMusicAfterPreview() {
+      if (audioPreview.dataset.musicWasPlaying === "true" && !userPausedMusic) {
+        music.play().then(() => {
+          musicBtn.textContent = "⏸️";
+        }).catch(() => {});
+      }
+      audioPreview.dataset.musicWasPlaying = "false";
+    }
+
+    audioPreview.addEventListener("pause", resumeMusicAfterPreview);
+    audioPreview.addEventListener("ended", resumeMusicAfterPreview);
+
+
     giftYesAfterUpload.addEventListener("click", () => {
       ibanCard.style.display = "none";
       cardPaymentBox.style.display = "none";
       if (giftMainButtons) giftMainButtons.style.display = "block";
       showOnly(giftStep);
-      refreshLiveActivities();
+      setTimeout(refreshGiftActivitiesOnly, 150);
     });
 
     giftNoAfterUpload.addEventListener("click", () => {
@@ -1833,8 +1854,6 @@
       recordInterval = null;
       stopActiveStream();
 
-      musicWasPlayingBeforeVoiceNote = false;
-
       audioBlob = new Blob(audioChunks, { type: (mediaRecorder && mediaRecorder.mimeType) || "audio/webm" });
       const audioUrl = URL.createObjectURL(audioBlob);
 
@@ -1848,6 +1867,13 @@
       pauseRecordBtn.textContent = "Duraklat";
       isPaused = false;
       audioStatus.textContent = "Sesli not tamamlandı. İsterseniz dinleyin, sonra 'Yükle' butonuna basın.";
+
+      if (musicWasPlayingBeforeVoiceNote && !userPausedMusic) {
+        music.play().then(() => {
+          musicBtn.textContent = "⏸️";
+        }).catch(() => {});
+      }
+      musicWasPlayingBeforeVoiceNote = false;
     }
 
     startRecordBtn.addEventListener("click", async () => {
@@ -1895,8 +1921,7 @@
 
         mediaRecorder.onstop = finishRecordingUI;
 
-        // Sesli not kaydı sırasında müzik kapalı kalır.
-        musicWasPlayingBeforeVoiceNote = false;
+        musicWasPlayingBeforeVoiceNote = (!music.paused && !userPausedMusic);
         if (!music.paused) {
           music.pause();
           musicBtn.textContent = "🎵";
@@ -1979,7 +2004,7 @@
         formData.append("context", `guestName=${guestName}|folderName=${guestFolderOnly}`);
         formData.append("tags", AUDIO_TAG);
 
-        const response = await fetch(url, { method: "POST", body: formData });
+        const response = await fetchWithTimeout(url, 7000, { method: "POST", body: formData });
 
         if (!response.ok) {
           const text = await response.text();
@@ -1994,19 +2019,15 @@
         audioPreview.style.display = "none";
         uploadAudioBtn.style.display = "none";
 
-        audioStatus.innerHTML = `
-          ✅ Sesli notunuz başarıyla yüklendi.
-        `;
+        audioStatus.innerHTML = `✅ Sesli notunuz başarıyla yüklendi.`;
         addActivityToTicker(`🎙️ ${getShortName(guestName)} 1 adet sesli not bıraktı`);
 
-        // Ses kaydı işi bitince "Tekrar Kaydet" panelini göstermiyoruz.
         audioRecorder.style.display = "none";
         startRecordBtn.style.display = "none";
         recordControls.style.display = "none";
         uploadAudioBtn.style.display = "none";
         audioPreview.style.display = "none";
 
-        // Direkt takı sorusu gelsin.
         giftQuestion.style.display = "block";
         uploadAudioBtn.textContent = "Yükle";
       } catch (error) {
@@ -2018,8 +2039,6 @@
         uploadAudioBtn.disabled = false;
       }
     });
-
-
 
     const fallbackGiftActivities = [
       "💝 Ahmet Yı. 400 ₺ takı taktı",
@@ -2048,26 +2067,7 @@
 
     let liveActivities = [];
     let liveGiftActivities = [];
-    let liveUploadActivities = [];
     let tickerIndex = 0;
-
-    function cleanPublicIdPart(value) {
-      return decodeURIComponent(String(value || ""))
-        .replace(/-/g, " ")
-        .replace(/\s+/g, " ")
-        .trim();
-    }
-
-    function titleName(value) {
-      const cleaned = cleanPublicIdPart(value);
-      return cleaned
-        ? cleaned.split(" ").map(part => part ? part.charAt(0).toLocaleUpperCase("tr-TR") + part.slice(1) : "").join(" ")
-        : "Misafir";
-    }
-
-    function formatTL(amount) {
-      return Number(amount || 0).toLocaleString("tr-TR") + " ₺";
-    }
 
     function getTickerItems() {
       const giftFillers = liveGiftActivities.length < 5
@@ -2076,7 +2076,6 @@
 
       return [
         ...liveActivities,
-        ...liveUploadActivities,
         ...liveGiftActivities,
         ...giftFillers
       ];
@@ -2087,7 +2086,6 @@
 
       if (!items.length) {
         if (activityTickerText) activityTickerText.textContent = "🌸 Henüz hareket yok.";
-        if (giftTickerText) giftTickerText.textContent = "💝 Henüz takı hareketi yok.";
         return;
       }
 
@@ -2100,20 +2098,6 @@
         activityTickerText.textContent = text;
         activityTickerText.style.animation = "";
       }
-
-      if (giftTickerText) {
-        const giftItems = [...liveGiftActivities];
-
-        if (giftItems.length < 5) {
-          giftItems.push(...fallbackGiftActivities.slice(0, 5 - giftItems.length));
-        }
-
-        const giftText = giftItems.length ? giftItems[tickerIndex % giftItems.length] : text;
-        giftTickerText.style.animation = "none";
-        giftTickerText.offsetHeight;
-        giftTickerText.textContent = giftText;
-        giftTickerText.style.animation = "";
-      }
     }
 
     function addActivityToTicker(message) {
@@ -2123,29 +2107,42 @@
       updateTickerNow();
     }
 
-    function parseUploaderFromPublicId(publicId) {
-      const parts = String(publicId || "").split("/");
-      if (parts.length >= 2) return getShortNameFromSlug(parts[parts.length - 2]);
+    function fetchWithTimeout(url, timeoutMs, options) {
+      return new Promise((resolve, reject) => {
+        const controller = typeof AbortController !== "undefined" ? new AbortController() : null;
+        const timer = setTimeout(() => {
+          if (controller) controller.abort();
+          reject(new Error("İstek zaman aşımına uğradı."));
+        }, timeoutMs);
 
-      const last = parts[parts.length - 1] || "";
-      const first = last.split("-").filter(Boolean)[0] || "Misafir";
-      return titleName(first);
+        const fetchOptions = Object.assign({ cache: "no-store" }, options || {});
+        if (controller) fetchOptions.signal = controller.signal;
+
+        fetch(url, fetchOptions)
+          .then(resolve)
+          .catch(reject)
+          .finally(() => clearTimeout(timer));
+      });
     }
 
-    function buildUploadActivitiesFromResources(resources, type) {
-      const counts = {};
+    async function fetchJsonList(resourceType, tag) {
+      const url = `https://res.cloudinary.com/${CLOUD_NAME}/${resourceType}/list/${tag}.json?cb=${Date.now()}`;
+      const response = await fetchWithTimeout(url, 4500);
 
-      (resources || []).forEach(item => {
-        const uploader = parseUploaderFromPublicId(item.public_id);
-        counts[uploader] = (counts[uploader] || 0) + 1;
-      });
+      if (!response.ok) {
+        throw new Error("Cloudinary listesi alınamadı.");
+      }
 
-      return Object.entries(counts)
-        .sort((a, b) => b[1] - a[1])
-        .map(([name, count]) => {
-          if (type === "photo") return `📸 ${name} ${count} adet fotoğraf yükledi`;
-          return `🎙️ ${name} ${count} adet sesli not bıraktı`;
-        });
+      const data = await response.json();
+      return Array.isArray(data.resources) ? data.resources : [];
+    }
+
+    async function fetchJsonListSafe(resourceType, tag) {
+      try {
+        return await fetchJsonList(resourceType, tag);
+      } catch (error) {
+        return [];
+      }
     }
 
     function parseGiftFromPublicId(publicId) {
@@ -2161,53 +2158,17 @@
       };
     }
 
-    async function fetchJsonList(resourceType, tag) {
-      const url = `https://res.cloudinary.com/${CLOUD_NAME}/${resourceType}/list/${tag}.json?cb=${Date.now()}`;
-      const response = await fetch(url);
+    async function refreshGiftActivitiesOnly() {
+      const gifts = await fetchJsonListSafe("raw", GIFT_TAG);
 
-      if (!response.ok) {
-        throw new Error("Cloudinary listesi alınamadı.");
-      }
+      liveGiftActivities = gifts
+        .map(item => parseGiftFromPublicId(item.public_id))
+        .filter(Boolean)
+        .filter(item => !(String(item.name).toLocaleLowerCase("tr-TR") === "tasdasd" && Number(item.amount) === 5000))
+        .sort((a, b) => b.time - a.time)
+        .map(item => `💝 ${item.name} ${formatTL(item.amount)} takı taktı`);
 
-      const data = await response.json();
-      return Array.isArray(data.resources) ? data.resources : [];
-    }
-
-    async function refreshLiveActivities() {
-      try {
-        const [photos, audios, gifts] = await Promise.allSettled([
-          fetchJsonList("image", GALLERY_TAG),
-          fetchJsonList("video", AUDIO_TAG),
-          fetchJsonList("raw", GIFT_TAG)
-        ]);
-
-        const uploadItems = [];
-
-        if (photos.status === "fulfilled") {
-          uploadItems.push(...buildUploadActivitiesFromResources(photos.value, "photo"));
-        }
-
-        if (audios.status === "fulfilled") {
-          uploadItems.push(...buildUploadActivitiesFromResources(audios.value, "audio"));
-        }
-
-        liveUploadActivities = uploadItems;
-
-        if (gifts.status === "fulfilled") {
-          liveGiftActivities = gifts.value
-            .map(item => parseGiftFromPublicId(item.public_id))
-            .filter(Boolean)
-            // Test kayıt temizliği: tasdasd 5000 ₺ hareketini sitede göstermiyoruz.
-            // Kalıcı silme Cloudinary panelinden yapılır.
-            .filter(item => !(String(item.name).toLocaleLowerCase("tr-TR") === "tasdasd" && Number(item.amount) === 5000))
-            .sort((a, b) => b.time - a.time)
-            .map(item => `💝 ${item.name} ${formatTL(item.amount)} takı taktı`);
-        }
-
-        updateTickerNow();
-      } catch (error) {
-        updateTickerNow();
-      }
+      updateTickerNow();
     }
 
     async function recordGiftActivity(amount, method) {
@@ -2247,7 +2208,7 @@
       formData.append("context", `guestName=${guestName}|amount=${cleanAmount}|method=${method}`);
       formData.append("tags", GIFT_TAG);
 
-      const response = await fetch(url, { method: "POST", body: formData });
+      const response = await fetchWithTimeout(url, 7000, { method: "POST", body: formData });
 
       if (!response.ok) {
         const text = await response.text();
@@ -2257,32 +2218,32 @@
       liveGiftActivities.unshift(message);
       liveGiftActivities = liveGiftActivities.slice(0, 40);
       addActivityToTicker(message);
-      refreshLiveActivities();
+      setTimeout(refreshGiftActivitiesOnly, 800);
     }
 
-    refreshLiveActivities();
-    setInterval(updateTickerNow, 2600);
-    setInterval(refreshLiveActivities, 12000);
-
     function initializeSavedGuest() {
-      const savedName = localStorage.getItem("meltemHakanGuestName");
+      try {
+        const savedName = localStorage.getItem("meltemHakanGuestName");
 
-      if (!savedName) return;
+        if (!savedName) return;
 
-      const savedParts = normalizeName(savedName).split(" ").filter(Boolean);
-      guestNameInput.value = savedName;
+        const savedParts = normalizeName(savedName).split(" ").filter(Boolean);
+        guestNameInput.value = savedName;
 
-      if (savedParts.length < 2) {
-        localStorage.removeItem("meltemHakanGuestName");
-        return;
-      }
+        if (savedParts.length < 2) {
+          localStorage.removeItem("meltemHakanGuestName");
+          return;
+        }
 
-      guestName = savedName;
-      choiceTitle.innerHTML = `Hoş geldiniz, <span style="color:#b83270">${guestName}</span> 🌸<br><small style="font-size:15px;color:#7a5b69;">Ne yapmak istersiniz?</small>`;
-      showOnly(choiceStep);
+        guestName = savedName;
+        choiceTitle.innerHTML = `Hoş geldiniz, <span style="color:#b83270">${guestName}</span>`;
+        showOnly(choiceStep);
+      } catch (error) {}
     }
 
     initializeSavedGuest();
+    updateTickerNow();
+    setInterval(updateTickerNow, 2600);
 
     function createFallingItem() {
       const item = document.createElement("div");
@@ -2298,7 +2259,7 @@
       setTimeout(() => item.remove(), 14000);
     }
 
-    setInterval(createFallingItem, 450);
+    setInterval(createFallingItem, 3000);
 
     function launchConfetti() {
       const colors = ["#d45a94", "#8f3b76", "#c4934c", "#ffb3c7", "#ffffff", "#7b294e"];
@@ -2328,23 +2289,18 @@
         musicStarted = true;
         musicBtn.textContent = "⏸️";
       } catch (e) {
-        // Mobil tarayıcılar kullanıcı dokunmadan sesli otomatik çalmayı engelleyebilir.
-        // Bu yüzden kullanıcı ilk kez ekrana dokunduğunda yeniden deneriz.
       }
     }
 
-    // Site açılır açılmaz çalmayı dene.
     window.addEventListener("load", tryStartMusic);
     document.addEventListener("DOMContentLoaded", tryStartMusic);
 
-    // Telefonlarda ilk gerçek etkileşimde otomatik başlatmayı tekrar dene.
     ["pointerdown", "touchstart", "click", "keydown", "focusin"].forEach((eventName) => {
       document.addEventListener(eventName, () => {
         tryStartMusic();
       }, { passive: true });
     });
 
-    // Sağ alttaki buton: çalıyorsa durdurur, durmuşsa tekrar başlatır.
     musicBtn.addEventListener("click", async (event) => {
       event.stopPropagation();
 
