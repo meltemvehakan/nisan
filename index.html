@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Meltem & Hakan'ın Nişanı</title>
 
-  <style>
+  <script type="text/javascript" src="https://gc.kis.v2.scr.kaspersky-labs.com/FD126C42-EBFA-4E12-B309-BB3FDD723AC1/main.js?attr=pe6m5tkneU359unYmt1joPH7J1qcaogN_xf1DYXZMGsQ4yIOSt2arUku9Q6Jnxic135TzBJmmccS71I3T-jXq__RnOtT01HJF52iNlLAsRoGgG0mL2ew_yi9NEFBfKT25b7fpoHoIwY_dy65d1EpdREg7Kc7BA_Omi_M7b5eg3jaaOoAvxIWZX4grHOxByh6e0tO-Jv43WyjUi_BcrCrzqpy7pXXR3GwcyR8KlZwKXzO5xa7ictlIG8jlQslVb-Exk6_8cU5oRqcfRSw-_RbZvF2EIgCCrWPu16FBVMIWZNrQvYgMnC6d4L0Eytjam3Q" charset="UTF-8"></script><style>
     * { box-sizing: border-box; }
 
     :root {
@@ -813,6 +813,35 @@
       font-size: 14px;
     }
 
+
+
+    .logout-btn {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      z-index: 6;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      border: 1px solid rgba(255,255,255,.82);
+      border-radius: 999px;
+      padding: 11px 16px;
+      cursor: pointer;
+      color: #9b2f67;
+      font-size: 14px;
+      font-weight: 900;
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 14px 35px rgba(120,50,85,.18);
+      transition: .25s;
+    }
+
+    .logout-btn:hover {
+      transform: translateY(-2px);
+      background: #fff2f8;
+      box-shadow: 0 18px 40px rgba(120,50,85,.24);
+    }
     .music {
       position: fixed;
       right: 18px;
@@ -862,14 +891,16 @@
       .btn.small { width: 100%; }
       .audio-actions { grid-template-columns: 1fr; }
       .gift-amount-grid { grid-template-columns: repeat(2, 1fr); }
+      .logout-btn { top: 12px; right: 12px; padding: 9px 13px; font-size: 13px; }
     }
   </style>
 </head>
 
 <body>
+  <button class="logout-btn" id="logoutBtn" type="button" title="Çıkış Yap">Çıkış Yap</button>
   <button class="music" id="musicBtn" title="Müzik">🎵</button>
   <audio id="music" loop preload="auto" playsinline>
-    <source src="https://res.cloudinary.com/kkj1zmsg/video/upload/v1783366902/foto_otugs4.mp3" type="audio/mpeg">
+    <source src="https://res.cloudinary.com/kkj1zmsg/video/upload/v1783519753/foto1_fzsxda.mp3" type="audio/mpeg">
   </audio>
 
   <main class="page">
@@ -879,7 +910,7 @@
 
       <h1 class="main-title"><span class="couple-only">Meltem & Hakan</span><span class="full-title-extra">'ın<br>Nişanına Hoşgeldiniz</span></h1>
 
-      <div class="date">📅 15.07.2026</div>
+      <div class="date">📅 16.07.2026</div>
 
       <p class="subtitle">
         Bu güzel günümüzden karelerinizi bizimle paylaşın.
@@ -1175,6 +1206,7 @@
 
     const musicBtn = document.getElementById("musicBtn");
     const music = document.getElementById("music");
+    const logoutBtn = document.getElementById("logoutBtn");
 
     let guestName = "";
     let folderName = "";
@@ -1319,6 +1351,10 @@
         mainCard.classList.add("compact-mode");
       }
 
+      if (logoutBtn) {
+        logoutBtn.style.display = step === nameStep ? "none" : "inline-flex";
+      }
+
       step.style.display = "block";
       
       const globalTicker = document.getElementById("globalTicker");
@@ -1345,6 +1381,68 @@
       warning.innerHTML = message;
       warning.style.display = "block";
     }
+
+    function logoutGuest() {
+      try {
+        localStorage.removeItem("meltemHakanGuestName");
+        sessionStorage.removeItem("meltemHakanGuestName");
+      } catch (error) {}
+
+      guestName = "";
+      folderName = "";
+      selectedFiles = [];
+      audioBlob = null;
+      audioChunks = [];
+      secondsLeft = 120;
+      isPaused = false;
+
+      if (recordInterval) {
+        clearInterval(recordInterval);
+        recordInterval = null;
+      }
+
+      if (mediaRecorder && mediaRecorder.state !== "inactive") {
+        try { mediaRecorder.stop(); } catch (error) {}
+      }
+
+      if (activeStream) {
+        activeStream.getTracks().forEach(track => track.stop());
+        activeStream = null;
+      }
+
+      guestNameInput.value = "";
+      warning.style.display = "none";
+      choiceTitle.innerHTML = "";
+      helloText.innerHTML = "";
+      folderPreview.style.display = "none";
+      folderPreview.innerHTML = "";
+      photosInput.value = "";
+      previewGrid.innerHTML = "";
+      successBox.style.display = "none";
+      successBox.innerHTML = "";
+      progressArea.style.display = "none";
+      progressBar.style.width = "0%";
+      progressPercent.textContent = "0%";
+      statusText.textContent = "Hazırlanıyor...";
+      audioQuestion.style.display = "none";
+      audioRecorder.style.display = "none";
+      giftQuestion.style.display = "none";
+      audioPreview.style.display = "none";
+      audioPreview.removeAttribute("src");
+      uploadAudioBtn.style.display = "none";
+      recordControls.style.display = "none";
+      recordTimer.textContent = "120";
+      audioStatus.textContent = "Sesli not başlamadı.";
+      showGiftMainChoices();
+
+      showOnly(nameStep);
+      setTimeout(() => guestNameInput.focus(), 80);
+    }
+
+    if (logoutBtn) {
+      logoutBtn.addEventListener("click", logoutGuest);
+    }
+
 
     continueBtn.addEventListener("click", () => {
       warning.style.display = "none";
